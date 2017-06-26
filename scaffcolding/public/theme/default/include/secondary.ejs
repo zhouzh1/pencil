@@ -1,0 +1,48 @@
+<!-- secondary start-->
+<div class="secondary">
+	<header class="header">
+		<h1 class="site-title"><a href="/" class="site-title-link"><%= locals.site.title %></a></h1>
+		<button type="button" class="toggle toggle-sm toggle-sidebar display-sidebar"><i class="fa fa-arrow-right"></i></button>
+		<h2 class="site-description"><%= locals.site.description %></h2>
+		<button type="button" class="toggle toggle-sm toggle-nav" id="toggle-nav"><i class="fa fa-bars"></i></button>
+		<nav class="navbar" id="navbar">
+			<table class="nav-table">
+				<tbody>
+					<tr>
+						<td><i class="fa fa-home"></i></td>
+						<td><a href="/">首页</td>
+					</tr>
+					<tr>
+						<td><i class="fa fa-archive"></i></td>
+						<td><a href="">归档</a></td>
+					</tr>
+					<tr>
+						<td><i class="fa fa-vcard"></i></td>
+						<td><a href="/page/about">关于</a></td>
+					</tr>
+					<tr>
+						<td><i class="fa fa-rss"></i></td>
+						<td><a href="/rss.xml">RSS</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</nav>
+	</header>
+	<section class="sidebar" id="sidebar">
+		<button type="button" class="toggle toggle-sm toggle-sidebar hide-sidebar"><i class="fa fa-arrow-left"></i></button>
+		<aside class="category">
+			<h1>文章分类</h1>
+			<ul class="category-list">
+				<li><a href="/category/HTML5">HTML5</a></li>
+				<li><a href="/category/JavaScript">JavaScript</a></li>
+				<li><a href="/category/websec">websec</a></li>
+			</ul>
+		</aside>
+		<aside class="tag">
+			<h1>标签</h1>
+			<a href="/tag/vue">vue</a>
+			<a href="/tag/backbone">backbone</a>
+		</aside>
+	</section>
+</div>
+<!-- secondary end -->

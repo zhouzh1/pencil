@@ -1,0 +1,43 @@
+{
+  "name": "pencil",
+  "version": "1.0.0",
+  "description": "pencil is a static blog generator",
+  "main": "bin/pencil.js",
+  "bin": {
+    "pencil": "build.js"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "mocha --no-timeouts --bail ./test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhouzh1/pencil.git"
+  },
+  "keywords": [
+    "static",
+    "blog",
+    "generator"
+  ],
+  "author": "zhouzh1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhouzh1/pencil/issues"
+  },
+  "homepage": "https://github.com/zhouzh1/pencil#readme",
+  "devDependencies": {
+    "eslint": "^4.0.0"
+  },
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "express": "^4.15.3",
+    "fs-extra": "^3.0.1",
+    "js-yaml": "^3.8.4",
+    "log4js": "^1.1.1",
+    "marked": "^0.3.6",
+    "moment": "^2.18.1",
+    "rss": "^1.2.2"
+  }
+}

@@ -1,0 +1,382 @@
+/**
+ *
+ * site.css
+ * mobile first
+ * use flex layout
+ *
+ */
+
+/*----------  variables  ----------*/
+@baseColor: rgba(255, 255, 255, 0.3);
+@border: 1px solid rgba(255, 255, 255, 0.1);
+
+/*----------  reset ----------*/
+a {
+	text-decoration: none;
+}
+a,button,input,optgroup,select,textarea {
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+a, img {
+    -webkit-touch-callout: none;
+}
+h1, h2 {
+	font-weight: normal;
+}
+h1, h2, ul, p, button {
+	margin: 0px;
+	padding: 0px;
+}
+ul {
+	list-style-type: none;
+}
+/*----------  body style  ----------*/
+html, body {
+	font: 1em/1.75em "Hiragino Sans GB", Helvetica, "Microsoft yahei", sans-serif;
+	background-color: #e0e7e8;
+	-webkit-overflow-scrolling: touch;
+	height: 100%;
+	min-height: 100%;
+	margin: 0px;
+	padding: 0px;
+	position: relative;
+}
+.no-scroll {
+	height: auto;
+}
+
+/*----------  wrapper style  ----------*/
+.body-wrapper {
+	display: flex;
+	flex-flow: column wrap;
+	width: 100%;
+	min-height: 100%;
+}
+
+/*----------  secondary style  ----------*/
+.secondary {
+	width: 100%;
+	color: @baseColor;
+	background-color: #333;
+}
+.header {
+	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+}
+.site-title {
+	width: 100%;
+	font-size: 3em;
+	font-family: "Playball";
+	height: 2em;
+	line-height: 2em;
+	text-align: center;
+	border-bottom: @border;
+}
+.site-title-link {
+	color: #fff;
+}
+.site-description {
+	text-align: center;
+	text-transform: uppercase;
+	height: 3.125em;
+	line-height: 3.125em;
+	font-size: 0.8em;
+	flex-grow: 1;
+}
+.toggle {
+	width: 2.5em;
+	height: 2.5em;
+	line-height: 2.5em;
+	text-align: center;
+	border: none;
+	background-color: transparent;
+}
+.toggle-nav {
+	border-left: @border;
+}
+.toggle-sidebar {
+	border-right: @border;
+}
+.fa {
+	font-size: 1em;
+	color: #fff;
+}
+.navbar {
+	width: 100%;
+	height: 0;
+	transition: height .5s;
+}
+.nav-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.nav-table tr {
+	display: flex;
+	flex-flow: row nowrap;
+}
+.nav-table td {
+	padding: 0px;
+	box-sizing: border-box;
+	border-top: @border;
+	height: 2.5em;
+	line-height: 2.5em;
+}
+.nav-table td:nth-of-type(1) {
+	display: inline-block;
+	box-sizing: border-box;
+	border-right: @border;
+	width: 2.5em;
+	text-align: center;
+	.fa {
+		color: @baseColor;
+	}
+}
+.nav-table td:nth-of-type(2) {
+	padding-left: 2em;
+	flex-grow: 1;
+	a {
+		font-size: 0.9em;
+		color: @baseColor;
+		text-transform: uppercase;
+		&:hover {
+			color: #fff;
+		}
+	}
+}
+.navbar.active {
+	height: 10em;
+}
+.sidebar {
+	width: 100%;
+	display: flex;
+	flex-flow: column wrap;
+	box-sizing: border-box;
+	padding: 1em;
+	position: absolute;
+	left: -100%;
+	top: 0;
+	transition: left .5s;
+	z-index: 999;
+	height: 100%;
+	min-height: 100%;
+	background-color: #333;
+	.hide-sidebar {
+		align-self: flex-end;
+		border: @border;
+	}
+	aside {
+		margin-top: 1em;
+		h1 {
+			font-size: 1em;
+			height: 2em;
+			line-height: 2em;
+			text-transform: uppercase;
+		}
+		li {
+			height: 1.5em;
+			line-height: 1.5em;
+		}
+		a {
+			color: #fff;
+			font-size: 0.85em;
+			&:hover {
+				color: @baseColor;
+			}
+		}
+	}
+}
+.sidebar.active {
+	left: 0;
+}
+
+/*----------  primary style  ----------*/
+.primary {
+	width: 100%;
+	background-color: #fff;
+	flex-grow: 1;
+	display: flex;
+	flex-flow: column wrap;
+}
+.main-content {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 1em;
+	flex-grow: 1;
+}
+.main-content .article-item {
+	font-size: 0.85em;
+	height: 1.5em;
+	margin-bottom: 0.6em;
+	line-height: 1.5em;
+	display: flex;
+	flex-flow: row wrap;
+	a {
+		color: #333;
+		flex-grow: 1;
+	}
+	.publish-date {
+		color: #ada9a9;
+	}
+}
+
+/*----------  pagination style  ----------*/
+.pagination {
+	display: flex;
+	flex-flow: row nowrap;
+	margin: 1.7em auto;
+}
+.page {
+	display: block;
+	width: 1.5em;
+	height: 1.5em;
+	line-height: 1.5em;
+	text-align: center;
+	font-size: 1em;
+	color: #fff;
+	margin-right: 0.5em;
+	border-radius: 0.2em;
+	background-color: #454343;
+}
+.page:last-of-type {
+	margin-right: 0;
+}
+.current-page {
+	background-color: #938f8f;
+}
+
+/*----------  footer style  ----------*/
+.footer {
+	width: 100%;
+	height: 3em;
+	line-height: 3em;
+	font-size: 0.85em;
+	text-align: center;
+	background-color: #e8e4e4;
+	color: #333;
+}
+
+/*----------  article page style  ----------*/
+.article-header {
+	.article-title {
+		font-size: 1.2em;
+	}
+	.article-meta {
+		color: #b1afaf;
+		font-size: 0.8em;
+		line-height: 2.5em;
+	}
+	.fa{
+		color: #b1afaf;
+	}
+	a {
+		color: #625f5f;
+		cursor: pointer;
+	}
+	.meta::after {
+		content: '\00a0\00a0\00a0\00a0';
+	}
+	.fa::after, a::after {
+		content: '\00a0\00a0';
+	}
+}
+.article-main {
+	font-size: 0.95em;
+	p {
+		margin-bottom: 1em;
+	}
+	img {
+		max-width: 100%;
+		text-align: center;
+		margin: 1em 0px;
+	}
+	ul {
+		margin-left: 1em;
+		list-style: disc outside;
+	}
+	blockquote {
+		margin: 2em 0px;
+		padding-left: 1em;
+		font-style: italic;
+		border-left: 5px solid #b7dde3;
+	}
+	code {
+		font: normal 1em Consolas, Monaco, monospace;
+		background-color: #fbd4d4;
+		color: #f76161;
+		padding: 0 0.2em;
+		border-radius: 3px;
+	}
+	pre code {
+		display: block;
+		padding: 1em;
+		line-height: 1.5em;
+		background-color: #232323;
+	}
+}
+.article-nav {
+	display: flex;
+	flex-flo: row nowrap;
+	justify-content: space-between;
+	a {
+		padding: 0.3em 0.8em;
+		&:hover {
+			border: 1px solid #333;
+			border-radius: 0.2em;
+		}
+	}
+	.prev-article::after {
+		content: '\2190';
+		color: #333;
+	}
+	.next-article::after {
+		content: '\2192';
+		color: #333;
+	}
+}
+
+/*----------  archive page style  ----------*/
+.archive-section {
+	margin-bottom: 0.8em;
+	padding-left: 0.5em;
+	padding-bottom: 0.3em;
+	border-left: 2px solid #333;
+	position: relative;
+	h2 {
+		line-height: 1.5em;
+	}
+	.circle {
+		position: absolute;
+		width: 0.8em;
+		height: 0.8em;
+		left: -0.55em;
+		top: -0.95em;
+		display: block;
+		border-radius: 50%;
+		border: 2px solid #333;
+	}
+}
+.archive-section:first-of-type {
+	.circle {
+		display: none;
+	}
+}
+.archive-article-list {
+	padding-left: 1em;
+	li {
+		line-height: 1.2em;
+		margin: 0.3em 0px;
+		a, span {
+			font-size: 0.95em;
+		}
+		a {
+			color: #333;
+		}
+		a::after {
+			content: '\00a0\00a0';
+		}
+		span {
+			color: #a09d9d;
+		}
+	}
+}

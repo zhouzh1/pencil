@@ -1,0 +1,19 @@
+# config of site
+site:
+    host: http://zhouzh.me
+    title: zhouzh1
+    keyword: software-development web-security
+    description: write something casually
+    author: zhouzh1
+    avatar: image url of avatar
+    rssSize: 10
+    pageSize: 10
+    theme: default
+    copyright: 2017 powered by pencil
+# contact
+contact:
+    email: zzhouzhii@gmail.com
+    github: https://github.com/zhouzh1
+    weibo:  http://www.weibo.com
+    twitter: http://www.twitter.com
+    facebook: http://www.facebook.com

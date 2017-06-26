@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include('include/header'); %>
+</head>
+<body>
+	<div class="body-wrapper">
+		<%- include('include/secondary'); %>
+		<div class="primary">
+			<div class="main-content">
+				<article class="article">
+					<header class="article-header">
+						<h1 class="article-title">远离精神病</h1>
+						<div class="article-meta">
+							<span class="meta publish-date"><i class="fa fa-calendar"></i>2017-06-15</span>
+							<span class="meta tags"><i class="fa fa-tags"></i><a href="/tag/javascript">javascript</a><a href="/tag/xss">xss</a></span>
+						</div>
+					</header>
+					<section class="article-main">
+						<%- locals.page.content %>
+					</section>
+					<footer class="article-nav">
+						<a href="#" title="上一篇" class="prev-article"></a>
+						<a href="#" title="下一篇" class="next-article"></a>
+					</footer>
+				</article>
+			</div>
+			<%- include('include/footer') %>
+		</div>
+	</div>
+	<%- include('include/script'); %>
+</body>
+</html>
