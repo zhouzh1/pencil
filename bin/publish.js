@@ -2,14 +2,14 @@
  * publish command
  */
 
-const checkroot = require('../checkroot');
+const checkroot = require('../lib/checkroot');
 checkroot.check();
 
 const fse = require('fs-extra');
 const yaml = require('js-yaml');
 const EOL = require('os').EOL;
-const logger = require('../logger');
-const processargvs = require('../processargvs');
+const logger = require('../lib/logger');
+const processargvs = require('../lib/processargvs');
 
 function help () {
 	console.log(`Usage: pencil publish [type] <title>${EOL}`);

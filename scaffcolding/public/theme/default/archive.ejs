@@ -20,7 +20,7 @@
 						<ul class="archive-article-list">
 						<% for (var article of articles) { -%>
 							<li class="archive-article-item">
-								<% link_to(article.title, `/article/${article.filename}.html`) %>
+								<a href="/article/<%= article.filename %>.html"><%= article.title %></a>
 								<span class="publish-date"><%= article.createdTime %></span>
 							</li>
 						<% } -%>

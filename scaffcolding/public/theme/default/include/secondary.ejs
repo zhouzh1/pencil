@@ -35,14 +35,14 @@
 			<h1>文章分类</h1>
 			<ul class="category-list">
 			<% for (var category in categories) { -%>
-				<li><% link_to(`${category}(${categories[category].length})`, `/category/${category}`) %></li>
+				<li><a href="/category/<%= category %>"><%= `${category}(${categories[category].length})` %></a></li>
 			<% } -%>
 			</ul>
 		</aside>
 		<aside class="tag">
 			<h1>标签</h1>
 		<% for (var tag in tags) { -%>
-			<% link_to(tag, `/tag/${tag}`) %>	
+			<a href="/tag/<%= tag %>"><%= tag %></a>
 		<% } -%>
 		</aside>
 	</section>

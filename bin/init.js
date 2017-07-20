@@ -2,6 +2,7 @@
  * Init Command
  */
 
+const path = require('path');
 const fse = require('fs-extra');
 const logger = require('../lib/logger');
 const EOL = require('os').EOL;
@@ -28,7 +29,7 @@ function runner (argvs) {
 			logger.error(`not a empty directory: ${root}`);
 		}
 		else {
-			fse.copySync('../scaffcolding', root);
+			fse.copySync(path.join(__dirname, '../scaffcolding'), root);
 			logger.info(`successfully! now you should switch to ${root}`);
 		}
 		process.exit();

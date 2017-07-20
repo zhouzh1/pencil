@@ -13,61 +13,60 @@ const test_help = path.join(__dirname, './test_help.js');
 
 const cwd = process.cwd();
 const execOptions = { encoding: 'utf8' };
-const commands = ['help', 'init', 'create', 'build', 'update', 'server', 'push'];
+const commands = ['help', 'init', 'create', 'publish', 'generate', 'server', 'push'];
 let testdir;
 
 describe('Commands:', () => {
 	describe('#help_>', () => {
-		let actual;
+		let expected;
 		before(() => {
-			actual = exec(`node ${test_help}`, execOptions);
+			expected = exec(`node ${test_help}`, execOptions);
 		});
 
 		it('pencil help: should show overall usage message', () => {
-			const expected = exec(`node ${pencil} help`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} help`, execOptions);
+			assert.equal(expected, actual);
 		});
 
 		it('pencil help argv_1 argv_2: should show overall usage message', () => {
-			const expected = exec(`node ${pencil} help argv_1 argv_2`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} help argv_1 argv_2`, execOptions);
+			assert.equal(expected, actual);
 		});
 
 		it('pencil help non_existing_command: should show overall usage message', () => {
-			const expected = exec(`node ${pencil} help non_existing_command`, execOptions);
-			assert(actual, expected);
+			const actual = exec(`node ${pencil} help non_existing_command`, execOptions);
+			assert(expected, actual);
 		});
 
 		commands.forEach((command) => {
 			it(`pencil help ${command}: should show usage message of command ${command}`, () => {
-				const actual = exec(`node ${test_help} ${command}`, execOptions);
-				const expected = exec(`node ${pencil} help ${command}`, execOptions);
-				assert(actual, expected);
+				const expected = exec(`node ${test_help} ${command}`, execOptions);
+				const actual = exec(`node ${pencil} help ${command}`, execOptions);
+				assert(expected, actual);
 			});
 		});
 	});
 
 	describe('#init_>', () => {
-		let actual;
+		let expected;
 		before(() => {
-			actual = exec(`node ${test_help} init`, execOptions);
+			expected = exec(`node ${test_help} init`, execOptions);
 		});
 
 		it('pencil init: should show usage message', () => {
-			const expected = exec(`node ${pencil} init`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} init`, execOptions);
+			assert.equal(expected, actual);
 		});
 
 		it('pencil init argv_1 argv_2: should show usage message', () => {
-			const expected = exec(`node ${pencil} init path_1 path_2`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} init path_1 path_2`, execOptions);
+			assert.equal(expected, actual);
 		});
 
 		it('pencil init non_empty_dir: should show error message', () => {
 			const non_empty_dir = path.join(cwd, fse.mkdtempSync('non_empty_'));
 			const test_file = path.join(non_empty_dir, './test.txt');
-			fse.ensureFileSync(test_file);
-			fse.writeFileSync(test_file, 'test', 'utf8');
+			fse.outputFileSync(test_file, 'test');
 			const stdout = exec(`node ${pencil} init ${non_empty_dir}`, execOptions);
 			fse.removeSync(non_empty_dir);
 			assert.ok(stdout.includes(' [ERROR] ') || console.log(stdout));
@@ -82,25 +81,25 @@ describe('Commands:', () => {
 	});
 
 	describe('#create_>', () => {
-		let actual;
+		let expected;
 		before(() => {
-			actual = exec(`node ${test_help} create`, execOptions);
 			testdir = fse.mkdtempSync('test_');
 			exec(`node ${pencil} init ${testdir}`, execOptions);
 			process.chdir(testdir);
+			expected = exec(`node ${test_help} create`, execOptions);
 		});
 
 		it('pencil create: should show usage message', () => {
-			const expected = exec(`node ${pencil} create`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} create`, execOptions);
+			assert.equal(expected, actual);
 		});
 		it('pencil create argv_1 argv_2 argv_3: should show usage message', () => {
-			const expected = exec(`node ${pencil} create argv_1 argv_2 argv_3`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} create argv_1 argv_2 argv_3`, execOptions);
+			assert.equal(expected, actual);
 		});
 		it('pencil create incorrect_type title: should show usage message', () => {
-			const expected = exec(`node ${pencil} create incorrect_type title`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} create incorrect_type title`, execOptions);
+			assert.equal(expected, actual);
 		});
 		it('pencil create hello: should create a article draft whose title is hello', () => {
 			const stdout = exec(`node ${pencil} create hello`, execOptions);
@@ -120,28 +119,28 @@ describe('Commands:', () => {
 	});
 
 	describe('#publish_>', () => {
-		let actual;
+		let expected;
 		before(() => {
-			actual = exec(`node ${test_help} publish`, execOptions);
+			expected = exec(`node ${test_help} publish`, execOptions);
 		});
 
 		it('pencil publish: should show usage message', () => {
-			const expected = exec(`node ${pencil} publish`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} publish`, execOptions);
+			assert.equal(expected, actual);
 		});
 
 		it('pencil publish argv_1 argv_2 argv_3: should show usage message', () => {
-			const expected = exec(`node ${pencil} publish argv_1 argv_2 argv_3`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} publish argv_1 argv_2 argv_3`, execOptions);
+			assert.equal(expected, actual);
 		});
 
 		it('pencil publish incorrect_type title: should show usage message', () => {
-			const expected = exec(`node ${pencil} publish incorrect_type title`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} publish incorrect_type title`, execOptions);
+			assert.equal(expected, actual);
 		});
 
 		it('pencil publish hello: should publish a article whose title is hello', () => {
-			fse.appendFileSync('./source/draft/article/hello.md', '# hello', 'utf8');
+			fse.appendFileSync('./source/draft/article/hello.md', '\n# hello', 'utf8');
 			const stdout = exec(`node ${pencil} publish hello`, execOptions);
 			const draftExists = fse.existsSync('./source/draft/article/hello.md');
 			const sourceExists = fse.existsSync('./source/article/hello.md');
@@ -152,7 +151,7 @@ describe('Commands:', () => {
 			const draft = './source/draft/article/world.md';
 			let content = fse.readFileSync(draft, 'utf8');
 			fse.outputFileSync(draft, content.replace('filename:', 'filename: test world'));
-			fse.appendFileSync(draft, '# world', 'utf8');
+			fse.appendFileSync(draft, '\n# world', 'utf8');
 			const stdout = exec(`node ${pencil} publish article world`, execOptions);
 			const draftExists = fse.existsSync(draft);
 			const sourceExists = fse.existsSync('./source/article/hello.md');
@@ -160,7 +159,7 @@ describe('Commands:', () => {
 		});
 
 		it('pencil publish page doc: should publish a page whose title is doc', () => {
-			fse.appendFileSync('./source/draft/page/doc.md', '# document', 'utf8');
+			fse.appendFileSync('./source/draft/page/doc.md', '\n# document', 'utf8');
 			const stdout = exec(`node ${pencil} publish page doc`, execOptions);
 			const draftExists = fse.existsSync('./source/draft/page/doc.md');
 			const sourceExists = fse.existsSync('./source/page/doc.md');
@@ -169,14 +168,14 @@ describe('Commands:', () => {
 	});
 
 	describe('#generate_>', () => {
-		let actual;
+		let expected;
 		before(() => {
-			actual = exec(`node ${test_help} generate`);
+			expected = exec(`node ${test_help} generate`);
 		});
 
 		it('pencil generate argv_1: should show usage message', () => {
-			const expected = exec(`node ${pencil} generate argv_1`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} generate argv_1`, execOptions);
+			assert.equal(expected, actual);
 		});
 
 		it('pencil generate: should generate all static pages', () => {
@@ -190,44 +189,38 @@ describe('Commands:', () => {
 	});
 
 	describe('#server_>', () => {
-		let actual;
+		let expected;
 		before(() => {
-			actual = exec(`node ${test_help} server`, execOptions);
+			expected = exec(`node ${test_help} server`, execOptions);
 		});
 
 		it('pencil server argv_1 argv_2: should show usage message', () => {
-			const expected = exec(`node ${pencil} server argv_1 argv_2`, execOptions);
-			assert.equal(actual, expected);
+			const actual = exec(`node ${pencil} server argv_1 argv_2`, execOptions);
+			assert.equal(expected, actual);
 		});
 
 		it('pencil server: should start a static server listening on port 3000', () => {
 			const server = spawn('node', [pencil, 'server']);
-			let stdout;
 			server.stdout.on('data', (data) => {
-				stdout = data;
 				process.kill(server.pid);
+				assert.ok(data.includes(' [INFO] ') || console.log(data));
 			});
-			assert.ok(stdout.includes(' [INFO] ') || console.log(stdout));
 		});
 
 		it('pencil server 8888: should start a static server listening on port 8888', () => {
 			const server = spawn('node', [pencil, 'server', 8888]);
-			let stdout;
 			server.stdout.on('data', (data) => {
-				stdout = data;
 				process.kill(server.pid);
+				assert.ok(data.includes(' [INFO] ') || console.log(data));
 			});
-			assert.ok(stdout.includes(' [INFO] ') || console.log(stdout));
 		});
 
 		it('pencil server invalid_port: should show error message', () => {
 			const server = spawn('node', [pencil, 'server', 'invalid_port']);
-			let stdout;
 			server.stdout.on('data', (data) => {
-				stdout = data;
 				process.kill(server.pid);
+				assert.ok(data.includes(' [ERROR] ') || console.log(data));
 			});
-			assert.ok(stdout.includes(' [ERROR] ') || console.log(stdout));
 		});
 	});
 
@@ -235,7 +228,7 @@ describe('Commands:', () => {
 		const cwd = process.cwd();
 		if (path.parse(cwd).base === testdir) {
 			process.chdir('../');
-			fse.removeSync(testdir);
+			fse.removeSync(cwd);
 		}
 	});
 });

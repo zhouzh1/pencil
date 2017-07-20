@@ -6,7 +6,6 @@ const checkroot = require('../lib/checkroot');
 checkroot.check();
 
 const fse = require('fs-extra');
-const path = require('path');
 const moment = require('moment');
 const processargvs = require('../lib/processargvs');
 const logger = require('../lib/logger');
@@ -27,13 +26,23 @@ function help () {
  */
 function runner (argvs) {
 	let { type, title } = processargvs(argvs, help);
-	let frontmatter = `---
+	let frontmatter;
+	if (type === 'article') {
+		frontmatter = `---
 title: ${title}
+tags: []
+category:
 filename:
-${type === 'article' ? 'tags: []' : ''}
-${type === 'article' ? 'category:' : ''}
 createdTime: ${moment().format('YYYY-MM-DD HH:mm')}
 ---`;
+	}
+	else {
+		frontmatter = `---
+title: ${title}
+filename:
+createdTime: ${moment().format('YYYY-MM-DD HH:mm')}
+---`;
+	}
 	// replace spaces between words with '_'
 	let filename = title.split(' ').join('_');
 	let draft = `./source/draft/${type}/${filename}.md`;
