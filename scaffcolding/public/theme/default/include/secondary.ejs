@@ -1,9 +1,14 @@
 <!-- secondary start-->
+<%
+	var site = locals.config.site;
+	var tags = locals.data.tags;
+	var categories = locals.data.categories;
+%>
 <div class="secondary">
 	<header class="header">
-		<h1 class="site-title"><a href="/" class="site-title-link"><%= locals.site.title %></a></h1>
+		<h1 class="site-title"><a href="/" class="site-title-link"><%= site.title %></a></h1>
 		<button type="button" class="toggle toggle-sm toggle-sidebar display-sidebar"><i class="fa fa-arrow-right"></i></button>
-		<h2 class="site-description"><%= locals.site.description %></h2>
+		<h2 class="site-description"><%= site.description %></h2>
 		<button type="button" class="toggle toggle-sm toggle-nav" id="toggle-nav"><i class="fa fa-bars"></i></button>
 		<nav class="navbar" id="navbar">
 			<table class="nav-table">
@@ -15,10 +20,6 @@
 					<tr>
 						<td><i class="fa fa-archive"></i></td>
 						<td><a href="">归档</a></td>
-					</tr>
-					<tr>
-						<td><i class="fa fa-vcard"></i></td>
-						<td><a href="/page/about">关于</a></td>
 					</tr>
 					<tr>
 						<td><i class="fa fa-rss"></i></td>
@@ -33,15 +34,16 @@
 		<aside class="category">
 			<h1>文章分类</h1>
 			<ul class="category-list">
-				<li><a href="/category/HTML5">HTML5</a></li>
-				<li><a href="/category/JavaScript">JavaScript</a></li>
-				<li><a href="/category/websec">websec</a></li>
+			<% for (var category in categories) { -%>
+				<li><% link_to(`${category}(${categories[category].length})`, `/category/${category}`) %></li>
+			<% } -%>
 			</ul>
 		</aside>
 		<aside class="tag">
 			<h1>标签</h1>
-			<a href="/tag/vue">vue</a>
-			<a href="/tag/backbone">backbone</a>
+		<% for (var tag in tags) { -%>
+			<% link_to(tag, `/tag/${tag}`) %>	
+		<% } -%>
 		</aside>
 	</section>
 </div>

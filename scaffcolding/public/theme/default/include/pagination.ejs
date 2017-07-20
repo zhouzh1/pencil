@@ -1,9 +1,31 @@
+<%
+	var pageCounts = locals.data.pageCounts;
+	var currentPage = locals.data.currentPage;
+	if (locals.data.currentTag) {
+		var urlPrefix = `/tag/${locals.data.currentTag}`;
+	}
+	else if (locals.data.currentCategory) {
+		var urlPrefix = `/category/${locals.data.currentCategory}`;
+	}
+	else {
+		var urlPrefix = '/';
+	}
+%>
+<% if (pageCounts > 1) { -%>
 <div class="pagination">
-	<a href="/" class="page prev-page"><i class="fa fa-angle-left"></i></a>
-	<a href="/" class="page">1</a> 
-	<a href="/page-2" class="page current-page">2</a>
-	<a href="/page-3" class="page">3</a>
-	<a href="/page-4" class="page">4</a>
-	<a href="/page-5" class="page">5</a>
-	<a href="/page-3" class="page next-page"><i class="fa fa-angle-right"></i></a>
+<% if (currentPage > 1) { -%>
+	<a href="<%= `${urlPrefix}/page-${currentPage - 1} `%>" class="page prev-page"><i class="fa fa-angle-left"></i></a>
+<% } -%>
+<% for (var i = 1; i <= pageCounts; i++) { -%>
+	<% if (i === currentPage) { -%>
+		<a href="<%= `${urlPrefix}/page-${i}` %>" class="page currentPage"><%= i %></a>
+	<% } else { -%>
+		<a href="<%= `${urlPrefix}/page-${i}` %>" class="page"><%= i %></a>
+	<% } -%>
+<% } -%>
+<% if (currentPage < pageCounts) { -%>
+	<a href="<%= `${urlPrefix}/page-${currentPage + 1}` %>" class="page next-page"><i class="fa fa-angle-right"></i></a>
+<% } -%>
 </div>
+<% } -%>
+	

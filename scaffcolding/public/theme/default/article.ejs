@@ -1,7 +1,15 @@
+<%
+	var artcile = locals.data.article;
+	var tags = article.tags;
+	var content = article.content;
+	var previous = article.previous;
+	var next = article.next;
+%>
 <!DOCTYPE html>
 <html>
 <head>
 	<%- include('include/header'); %>
+	<title><%= article.title %></title>
 </head>
 <body>
 	<div class="body-wrapper">
@@ -10,18 +18,23 @@
 			<div class="main-content">
 				<article class="article">
 					<header class="article-header">
-						<h1 class="article-title">远离精神病</h1>
+						<h1 class="article-title"><%= article.title %></h1>
 						<div class="article-meta">
-							<span class="meta publish-date"><i class="fa fa-calendar"></i>2017-06-15</span>
-							<span class="meta tags"><i class="fa fa-tags"></i><a href="/tag/javascript">javascript</a><a href="/tag/xss">xss</a></span>
+							<span class="meta publish-date"><i class="fa fa-calendar"></i><%= article.createdTime %></span>
+							<span class="meta tags">
+								<i class="fa fa-tags"></i>
+								<% for (var i = 0; i < tags.length; i++) { -%>
+									<% link_to(tag[i], `/tag/${tags[i]}`) %>
+								<% } -%>
+							</span>
 						</div>
 					</header>
 					<section class="article-main">
-						<%- locals.page.content %>
+						<%- content %>
 					</section>
 					<footer class="article-nav">
-						<a href="#" title="上一篇" class="prev-article"></a>
-						<a href="#" title="下一篇" class="next-article"></a>
+						<a href="/article/<%= previous.filename %>.html" title="上一篇" class="prev-article"></a>
+						<a href="/article/<%= next.filename %>.html" title="下一篇" class="next-article"></a>
 					</footer>
 				</article>
 			</div>

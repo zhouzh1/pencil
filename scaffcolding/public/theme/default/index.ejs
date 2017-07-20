@@ -1,7 +1,11 @@
+<%
+	var articles = locals.data.articles;
+%>
 <!DOCTYPE html>
 <html>
 <head>
 	<%- include('include/header'); %>
+	<title>Index - <%= locals.config.site.title %></title>
 </head>
 <body>
 	<div class="body-wrapper">
@@ -10,54 +14,12 @@
 		<div class="primary">
 			<div class="main-content">
 				<ul class="article-list">
+				<% for (var i = 0; i < articles.length; i++) { -%>
 					<li class="article-item">
-						<a href="/article/learn-vue">Vue.js的工作原理探索</a>
-						<span class="publish-date">2017-05-30</span>
+						<% link_to(article.title, `/article/${article.filename}.html`) %>
+						<span class="publish-date"><%= article.createdTime %></span>
 					</li>
-					<li class="article-item">
-						<a href="/article/learn-vue">与强迫症作战</a>
-						<span class="publish-date">2017-05-30</span>
-					</li>
-					<li class="article-item">
-						<a href="/article/learn-vue">文字能力很重要</a>
-						<span class="publish-date">2017-05-30</span>
-					</li>
-					<li class="article-item">
-						<a href="/article/learn-vue">人生在世，开心最重要</a>
-						<span class="publish-date">2017-05-30</span>
-					</li>
-					<li class="article-item">
-						<a href="/article/learn-vue">Vue.js的工作原理探索</a>
-						<span class="publish-date">2017-05-30</span>
-					</li>
-					<li class="article-item">
-						<a href="/article/learn-vue">与强迫症作战</a>
-						<span class="publish-date">2017-05-30</span>
-					</li>
-					<li class="article-item">
-						<a href="/article/learn-vue">文字能力很重要</a>
-						<span class="publish-date">2017-05-30</span>
-					</li>
-					<li class="article-item">
-						<a href="/article/learn-vue">人生在世，开心最重要</a>
-						<span class="publish-date">2017-05-30</span>
-					</li>
-					<li class="article-item">
-						<a href="/article/learn-vue">Vue.js的工作原理探索</a>
-						<span class="publish-date">2017-05-30</span>
-					</li>
-					<li class="article-item">
-						<a href="/article/learn-vue">与强迫症作战</a>
-						<span class="publish-date">2017-05-30</span>
-					</li>
-					<li class="article-item">
-						<a href="/article/learn-vue">文字能力很重要</a>
-						<span class="publish-date">2017-05-30</span>
-					</li>
-					<li class="article-item">
-						<a href="/article/learn-vue">人生在世，开心最重要</a>
-						<span class="publish-date">2017-05-31</span>
-					</li>
+				<% } -%>
 				</ul>
 			</div>
 			<%- include('include/pagination'); %>

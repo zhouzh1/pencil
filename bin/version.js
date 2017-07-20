@@ -1,32 +1,31 @@
 /**
- * Display the version information of pencil
+ * version command
  */
-const path = require('path');
-const pkg = require(path.join(__dirname, '../package.json'));
 
-/**
- * Get help information about 'version' command
- */
-function help () {
+const pkg = require('../package.json');
+
+function help() {
 	console.log('Usage: pencil version');
-	console.log('Description:');
-	console.log('Display the version information of pencil');
+	console.log('  Description:');
+	console.log('    display version');
 }
 
 /**
- * Get the version information about pencil and platform
+ * show version of program and platform
  * @param  {Array} argvs argvs must be empty
  */
-function runner (argvs) {
+function runner(argvs) {
 	if (argvs.length) {
 		help();
+		process.exit();
 	}
 	else {
 		console.log(`pencil: ${pkg.version}`);
-		for (var key in process.versions) {
+		const versions = process.versions;
+		for (var key in versions) {
 			console.log(`${key}: ${process.versions[key]}`);
 		}
 	}
 }
 
-module.exports = {help, runner};
+module.exports = { help, runner };
