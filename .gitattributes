@@ -1,0 +1,3 @@
+*.ejs linguist-language=js
+*.css linguist-language=js
+*.less linguist-language=js
