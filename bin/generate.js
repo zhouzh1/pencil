@@ -2,27 +2,40 @@
  * generate command
  */
 
+if (process.argv[2] === 'help') {
+	help();
+	process.exit();
+}
+
 const checkroot = require('../lib/checkroot');
 checkroot.check();
 
 const RSS = require('rss');
 const ejs = require('ejs');
 const fse = require('fs-extra');
-const EOL = require('os').EOL;
 const utils = require('../lib/utils');
 const logger = require('../lib/logger');
-const transform = require('../lib/transform');
 
 // assemble common data for all pages
 const config = utils.getConfig();
 const articles = utils.getArticles();
+const pages = utils.getPages();
 const tags = utils.getTags();
 const categories = utils.getCategories();
 const archives = utils.getArchives();
+// extract links of independent pages
+const pageLinks = (function() {
+	let map = {};
+	for (let page of pages) {
+		map[page.title] = `/page/${page.filename}.html`;
+	}
+	return map;
+})();
 let common = {
 	config: config,
 	data: {
 		tags: tags,
+		pageLinks: pageLinks,
 		archives: archives,
 		categories: categories,
 	}
@@ -35,23 +48,50 @@ const theme = site.theme;
 const host = site.host;
 
 function help() {
-	console.log(`Usage: pencil generate${EOL}`);
+	console.log('Usage: pencil generate');
 	console.log('  Description:');
 	console.log('    generate all static pages');
 }
 
+/**
+ * transform article.ejs or page.ejs to html file
+ * @param  {[type]} item           article or page data
+ * @param  {[type]} template       path of template
+ * @param  {[type]} templateString template string
+ * @param  {[type]} type           'article' or 'page'
+ */
+function transform(item, template, templateString, type) {
+	let locals = {
+		config: config,
+		data: common.data
+	};
+	locals.data[type] = item;
+	try {
+		let html = ejs.render(templateString, locals, { filename: template });
+		fse.outputFileSync(`./public/${type}/${item.filename}.html`, html);
+	}
+	catch (error) {
+		logger.error(error.toString());
+		process.exit();
+	}
+}
+
 function generateArticles() {
 	logger.info('generating articles...');
+	const template = `./public/theme/${theme}/article.ejs`;
+	const templateString = fse.readFileSync(template, 'utf8');
 	for (let article of articles) {
-		transform(article, common, 'article');
+		transform(article, template, templateString, 'article');
 	}
 }
 
 function generatePages() {
 	logger.info('generating pages...');
+	const template = `./public/theme/${theme}/page.ejs`;
+	const templateString = fse.readFileSync(template, 'utf8');
 	const pages = utils.getPages();
 	for (let page of pages) {
-		transform(page, common, 'page');
+		transform(page, template, templateString, 'page');
 	}
 }
 
@@ -78,7 +118,7 @@ function generateTags() {
 				locals.data.currentPage = i + 1;
 				try {
 					let html = ejs.render(templateString, locals, { filename: template });
-					fse.outputFileSync(`./public/tag/${tag}/page-${i + 1}/index.html`, html);
+					fse.outputFileSync(`./public/tag/${tag}/page/${i + 1}/index.html`, html);
 				}
 				catch (error) {
 					logger.error(error.toString());
@@ -86,7 +126,7 @@ function generateTags() {
 				}
 			}
 			// make http://<domain>/tag/<tag> accessible
-			let from = `./public/tag/${tag}/page-1/index.html`;
+			let from = `./public/tag/${tag}/page/1/index.html`;
 			let to = `./public/tag/${tag}/index.html`;
 			fse.copySync(from, to);
 		}
@@ -127,7 +167,7 @@ function generateCategories() {
 				locals.data.currentPage = i + 1;
 				try {
 					let html = ejs.render(templateString, locals, { filename: template });
-					fse.outputFileSync(`./public/tag/${category}/page-${i + 1}/index.html`, html);
+					fse.outputFileSync(`./public/category/${category}/page/${i + 1}/index.html`, html);
 				}
 				catch (error) {
 					logger.error(error.toString());
@@ -135,15 +175,15 @@ function generateCategories() {
 				}
 			}
 			// make http://<domain>/category/<tag> accessible
-			let from = `./public/tag/${category}/page-1/index.html`;
-			let to = `./public/tag/${category}/index.html`;
+			let from = `./public/category/${category}/page/1/index.html`;
+			let to = `./public/category/${category}/index.html`;
 			fse.copySync(from, to);
 		}
 		else {
 			locals.data.articles = articles;
 			try {
 				let html = ejs.render(templateString, locals, { filename: template });
-				fse.outputFileSync(`./public/tag/${category}/index.html`, html);
+				fse.outputFileSync(`./public/category/${category}/index.html`, html);
 			}
 			catch (error) {
 				logger.error(error.toString());
@@ -182,8 +222,8 @@ function generateIndex() {
 		config: config,
 		data: common.data
 	};
-	// if pageSize > 0, display by paging
-	if (pageSize > 0) {
+	// if exist some articles and pageSize > 0, display by paging
+	if (articles.length > 0 && pageSize > 0) {
 		let pageCounts = Math.ceil(articles.length / pageSize);
 		locals.data.pageCounts = pageCounts;
 		for (let i = 0; i < pageCounts; i++) {
@@ -191,7 +231,7 @@ function generateIndex() {
 			locals.data.currentPage = i + 1;
 			try {
 				let html = ejs.render(templateString, locals, { filename: template });
-				fse.outputFileSync(`./public/page-${i + 1}/index.html`, html);
+				fse.outputFileSync(`./public/page/${i + 1}/index.html`, html);
 			}
 			catch (error) {
 				logger.error(error.toString());
@@ -199,7 +239,7 @@ function generateIndex() {
 			}
 		}
 		// make http://<domain>/index.html accessible
-		let from = './public/page-1/index.html';
+		let from = './public/page/1/index.html';
 		let to = './public/index.html';
 		fse.copySync(from, to);
 	}
@@ -252,6 +292,7 @@ function runner(argvs) {
 		process.exit();
 	}
 	else {
+		const startTime = new Date().getTime();
 		// check theme
 		utils.checkTheme();
 		// clear
@@ -261,10 +302,11 @@ function runner(argvs) {
 		generatePages();
 		generateIndex();
 		generateTags();
-		generateArchives();
 		generateCategories();
+		generateArchives();
 		generateRss();
-		console.log(`${EOL}End!`);
+		const endTime = new Date().getTime();
+		console.log(`End! All cost ${(endTime - startTime) / 1000}s`);
 	}
 }
 

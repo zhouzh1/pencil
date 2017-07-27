@@ -18,7 +18,7 @@
 					<% var article = articles[i]; %>
 					<li class="article-item">
 						<a href="/article/<%= article.filename %>.html"><%= article.title %></a>
-						<span class="publish-date"><%= article.createdTime %></span>
+						<span class="publish-date"><%= (new Date(article.createdTime)).toLocaleDateString() %></span>
 					</li>
 				<% } -%>
 				</ul>

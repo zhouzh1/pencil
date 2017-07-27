@@ -2,16 +2,20 @@
  * Init Command
  */
 
+if (process.argv[2] === 'help') {
+	help();
+	process.exit();
+}
+
 const path = require('path');
 const fse = require('fs-extra');
 const logger = require('../lib/logger');
-const EOL = require('os').EOL;
 
 /**
  * init command
  */
 function help () {
-	console.log(`Usage: pencil init <path>${EOL}`);
+	console.log('Usage: pencil init <path>');
 	console.log('  Description:');
 	console.log('    initiate a new blog');
 	console.log('  Arguments:');

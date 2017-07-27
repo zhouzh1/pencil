@@ -6,12 +6,15 @@ module.exports = {
     "extends": "eslint:recommended",
     "rules": {
         "linebreak-style": [
-            "error",
+            "warn",
             "unix"
         ],
         "quotes": [
             "error",
-            "single"
+            "single",
+            {
+                "avoidEscape": true
+            }
         ],
         "semi": [
             "error",

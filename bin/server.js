@@ -2,16 +2,20 @@
  * server command
  */
 
+if (process.argv[2] === 'help') {
+	help();
+	process.exit();
+}
+
 const checkroot = require('../lib/checkroot');
 checkroot.check();
 
+const open = require('opn');
 const express = require('express');
 const logger = require('../lib/logger');
-const EOL = require('os').EOL;
-
 
 function help () {
-	console.log(`Usage: pencil server${EOL}`);
+	console.log('Usage: pencil server');
 	console.log('  Description:');
 	console.log('    start local server to preview');
 	console.log('  Arguments:');
@@ -36,8 +40,10 @@ function runner (argvs) {
 		let app = express();
 		// set './public' as '/www' of server
 		app.use(express.static('public'));
-		app.listen(port, function() {
+		app.listen(port, function(error) {
 			logger.info(`server is listening on port ${port}...`);
+			// open default browser
+			open(`http://localhost:${port}`);
 		});
 	}
 }

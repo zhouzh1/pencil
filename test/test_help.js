@@ -16,8 +16,7 @@ else {
 	const command = argvs[0];
 	let executable = path.join(__dirname, `../bin/${command}.js`);
 	if (fs.existsSync(executable)) {
-		let module = require(executable);
-		module.help();
+		require(executable).help();
 	}
 	else {
 		help.help();

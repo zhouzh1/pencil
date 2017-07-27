@@ -13,7 +13,7 @@ const test_help = path.join(__dirname, './test_help.js');
 
 const cwd = process.cwd();
 const execOptions = { encoding: 'utf8' };
-const commands = ['help', 'init', 'create', 'publish', 'generate', 'server', 'push'];
+const commands = ['help', 'init', 'create', 'publish', 'generate', 'list', 'edit', 'delete', 'server', 'push'];
 let testdir;
 
 describe('Commands:', () => {
@@ -101,11 +101,6 @@ describe('Commands:', () => {
 			const actual = exec(`node ${pencil} create incorrect_type title`, execOptions);
 			assert.equal(expected, actual);
 		});
-		it('pencil create hello: should create a article draft whose title is hello', () => {
-			const stdout = exec(`node ${pencil} create hello`, execOptions);
-			const exists = fse.existsSync('./source/draft/article/hello.md');
-			assert.ok(exists || console.log(stdout));
-		});
 		it('pencil create article world: should create a article draft whose title is world', () => {
 			const stdout = exec(`node ${pencil} create article world`, execOptions);
 			const exists = fse.existsSync('./source/draft/article/world.md');
@@ -137,14 +132,6 @@ describe('Commands:', () => {
 		it('pencil publish incorrect_type title: should show usage message', () => {
 			const actual = exec(`node ${pencil} publish incorrect_type title`, execOptions);
 			assert.equal(expected, actual);
-		});
-
-		it('pencil publish hello: should publish a article whose title is hello', () => {
-			fse.appendFileSync('./source/draft/article/hello.md', '\n# hello', 'utf8');
-			const stdout = exec(`node ${pencil} publish hello`, execOptions);
-			const draftExists = fse.existsSync('./source/draft/article/hello.md');
-			const sourceExists = fse.existsSync('./source/article/hello.md');
-			assert.ok((!draftExists && sourceExists) || console.log(stdout));
 		});
 
 		it('pencil publish article world: should publish a article whose title is world', () => {
@@ -180,11 +167,10 @@ describe('Commands:', () => {
 
 		it('pencil generate: should generate all static pages', () => {
 			const stdout = exec(`node ${pencil} generate`, execOptions);
-			const existsHello = fse.existsSync('./public/article/hello.html');
 			const existsWorld = fse.existsSync('./public/article/test_world.html');
 			const existsDoc = fse.existsSync('./public/page/doc.html');
 			const existsIndex = fse.existsSync('./public/index.html');
-			assert.ok((existsHello && existsWorld && existsDoc && existsIndex) || console.log(stdout));
+			assert.ok((existsWorld && existsDoc && existsIndex) || console.log(stdout));
 		});
 	});
 

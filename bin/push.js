@@ -2,19 +2,23 @@
  * push command
  */
 
+if (process.argv[2] === 'help') {
+	help();
+	process.exit();
+}
+
 const checkroot = require('../lib/checkroot');
 checkroot.check();
 
 const exec = require('child_process').exec;
 const logger = require('../lib/logger');
-const EOL = require('os').EOL;
 
 /**
  * show help info about push command
  * @return {[type]} [description]
  */
 function help () {
-	console.log(`Usage: pencil push${EOL}`);
+	console.log('Usage: pencil push');
 	console.log('  Description:');
 	console.log('    push to remote server by git');
 }

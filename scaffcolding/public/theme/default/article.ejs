@@ -20,7 +20,9 @@
 					<header class="article-header">
 						<h1 class="article-title"><%= article.title %></h1>
 						<div class="article-meta">
-							<span class="meta publish-date"><i class="fa fa-calendar"></i><%= article.createdTime %></span>
+							<span class="meta publish-date">
+								<i class="fa fa-calendar"></i><%= (new Date(article.createdTime)).toLocaleDateString() %>
+							</span>
 							<span class="meta tags">
 								<i class="fa fa-tags"></i>
 								<% for (var i = 0; i < tags.length; i++) { -%>

@@ -2,6 +2,11 @@
  * version command
  */
 
+if (process.argv[2] === 'help') {
+	help();
+	process.exit();
+}
+
 const pkg = require('../package.json');
 
 function help() {
