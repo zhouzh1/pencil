@@ -40,7 +40,7 @@ function runner () {
 				}
 				else {
 					console.log('committing...');
-					exec(`git commit -m "push at ${new Date().getUTCString()}"`, options, function (error, stdout, stderr) {
+					exec(`git commit -m "push at ${new Date().toUTCString()}"`, options, function (error, stdout, stderr) {
 						if (error) {
 							logger.error(stderr);
 							process.exit();

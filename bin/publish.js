@@ -46,7 +46,7 @@ function publish(type, title) {
 		else {
 			let formal = `./source/${type}/${draftname}.md`;
 			fse.moveSync(draft, formal);
-			console.log('successfully!');
+			logger.info('successfully!');
 		}
 	}
 }

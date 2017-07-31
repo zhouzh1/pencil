@@ -15,11 +15,11 @@ const logger = require('../lib/logger');
  * init command
  */
 function help () {
-	console.log('Usage: pencil init <path>');
+	console.log('Usage: pencil init <dir>');
 	console.log('  Description:');
 	console.log('    initiate a new blog');
 	console.log('  Arguments:');
-	console.log('    <path>  an absolute or relative path');
+	console.log('    <dir>  an absolute or relative path');
 }
 
 /**

@@ -1,14 +1,14 @@
-# config of site
+# site
 site:
     host: http://zhouzh.me
-    title: zhouzh1
-    keywords: software-development web-security
-    description: write something casually
+    title: pencil
+    keywords: ['software', 'development']
+    description: description of site
     author: zhouzh1
     avatar: image url of avatar
-    rssSize: 10
-    pageSize: 10
-    theme: default
+    rssSize: 10 # count of items to be added rss.xml
+    pageSize: 1 # count of items in index page
+    theme: default # theme of blog
     copyright: 2017 powered by pencil
 # contact
 contact:
@@ -17,3 +17,4 @@ contact:
     weibo:  http://www.weibo.com
     twitter: http://www.twitter.com
     facebook: http://www.facebook.com
+# other configuration

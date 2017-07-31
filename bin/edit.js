@@ -19,8 +19,8 @@ function help() {
 	console.log('  Description:');
 	console.log('    open default editor to edit markdown');
 	console.log('  Arguments:');
-	console.log('    <title>  title of item');
 	console.log("     <type>  one of ['draft-article', 'draft-page', 'article', 'page']");
+	console.log('    <title>  title of item');
 }
 
 

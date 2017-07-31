@@ -1,0 +1,49 @@
+<%
+	var archives = locals.data.archives;
+%>
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include('include/header'); %>
+	<title>Archive - <%= locals.config.site.title %></title>
+</head>
+<body>
+	<div class="body-wrapper">
+		<%- include('include/secondary'); %>
+		<div class="primary">
+			<div class="main-content">
+			<% if (Object.keys(archives).length > 0) { -%>	
+				<div class="archive-wrapper">
+				<% for (var year in archives) { -%>
+				<%
+					var thisYear = archives[year];
+				%>
+					<section class="archive-section">
+						<h2 class="archive-year" id="<%= year %>"><%= year %></h2>
+						<ul class="archive-article-list">
+					<% for (var month in thisYear) { -%>
+						<%
+							var articles = thisYear[month];
+						%>
+						<% for (var article of articles) { -%>
+							<li class="archive-article-item">
+								<a href="/article/<%= article.filename %>"><%= article.title %></a>
+								<span class="publish-date"><%= (new Date(article.createdTime)).toLocaleDateString() %></span>
+							</li>
+						<% } -%>
+					<% } -%>
+						</ul>
+						<span class="circle"></span>
+					</section>
+				<% } -%>
+				</div>
+			<% } else { -%>
+				<p class="empty-promt">还未创建任何文章...</p>
+			<% } -%>
+			</div>
+			<%- include('include/footer'); %>
+		</div>
+	</div>
+	<%- include('include/script'); %>
+</body>
+</html>

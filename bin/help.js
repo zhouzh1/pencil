@@ -8,12 +8,15 @@ const fse = require('fs-extra');
 function help () {
 	console.log('Usage: pencil <command>');
 	console.log('  Commands:');
-	console.log('       help: show usage information');
+	console.log('       help: show help information');
 	console.log('       init: initiate a new blog');
 	console.log('     create: create a new draft');
 	console.log('    publish: publish draft');
 	console.log('   generate: generate all static pages');
 	console.log('     server: start local server to preview');
+	console.log('       edit: open default editor to edit markdown');
+	console.log('       list: list drafts, articles and pages');
+	console.log('     delete: delete drafts, articles and pages');
 	console.log('       push: push to remote server');
 }
 

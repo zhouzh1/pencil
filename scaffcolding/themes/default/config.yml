@@ -1,0 +1,5 @@
+# configuration of theme
+# pageIcons uses class name of fontawesome
+pageIcons:
+  "文档": "fa-file-text"
+  "关于我": "fa-vcard"

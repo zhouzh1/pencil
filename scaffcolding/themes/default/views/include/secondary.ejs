@@ -1,0 +1,80 @@
+<!-- secondary start-->
+<%
+	var site = locals.config.site;
+	var themeConfig = locals.config.themeConfig;
+	var label = locals.data.label;
+	var tags = locals.data.tags;
+	var categories = locals.data.categories;
+	var archives = locals.data.archives;
+	var pageLinks = locals.data.pageLinks;	
+%>
+<div class="secondary">
+	<header class="header">
+		<h1 class="site-title"><a href="/" class="site-title-link"><%= site.title %></a></h1>
+		<button type="button" class="toggle toggle-sm toggle-sidebar display-sidebar"><i class="fa fa-arrow-right"></i></button>
+		<h2 class="site-description" title="<%= site.description %>"><%= site.description %></h2>
+		<button type="button" class="toggle toggle-sm toggle-nav" id="toggle-nav"><i class="fa fa-bars"></i></button>
+		<nav class="navbar" id="navbar">
+			<table class="nav-table">
+				<tbody>
+					<tr>
+						<% var visitClass = label === 'index' ? 'visited' : '' %>
+						<td><i class="fa fa-home <%= visitClass %>"></i></td>
+						<td><a href="/" class="<%= visitClass %>">首页</a></td>
+					</tr>
+					<tr>
+						<% var visitClass = label === 'archive' ? 'visited' : '' %>
+						<td><i class="fa fa-archive <%= visitClass %>"></i></td>
+						<td><a href="/archive" class="<%= visitClass %>">归档</a></td>
+					</tr>
+				<% for (let title in pageLinks) { -%>
+				<% var visitClass = label === title ? 'visited' : '' %>
+					<tr>
+						<td><i class="fa <%= themeConfig.pageIcons[title] %> <%= visitClass %>"></i></td>
+						<td><a href="<%= pageLinks[title] %>" class="<%= visitClass %>"><%= title %></a></td>
+					</tr>
+				<% } -%>
+					<tr>
+						<td><i class="fa fa-rss"></i></td>
+						<td><a href="/rss.xml">RSS</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</nav>
+	</header>
+	<section class="sidebar" id="sidebar">
+		<button type="button" class="toggle toggle-sm toggle-sidebar hide-sidebar"><i class="fa fa-arrow-left"></i></button>
+		<% if (Object.keys(categories).length > 0) { -%>
+		<aside class="category">
+			<h1>文章分类</h1>
+			<ul class="category-list">
+			<% for (var category in categories) { -%>
+				<li><a href="/category/<%= category %>"><%= `${category} (${categories[category].length})` %></a></li>
+			<% } -%>
+			</ul>
+		</aside>
+		<% } -%>
+
+		<% if (Object.keys(archives).length > 0) { -%>
+		<aside class="archive">
+			<h1>文章归档</h1>
+		<% for (var year in archives) { -%>
+		<%
+			var thisYear = archives[year];
+		%>
+			<% for (var month in thisYear) { -%>
+			<a href="/archive/index.html#<%= `${year}` %>"><%= `${year}年${month}月 (${thisYear[month].length})` %></a>
+			<% } -%>
+		<% } -%>
+		</aside>
+		<% } -%>
+
+		<% if (Object.keys(tags).length > 0) { -%>
+		<aside class="tag">
+			<h1>标签</h1>
+			<%- locals.plugins['tagcloud'] %>  
+		</aside>
+		<% } -%>
+	</section>
+</div>
+<!-- secondary end -->

@@ -56,7 +56,7 @@ createdTime: ${moment().format('YYYY-MM-DD HH:mm')}
 	}
 	else {
 		fse.outputFileSync(draft, frontmatter);
-		console.log('successfully!');
+		logger.info('successfully!');
 		// open default editor
 		open(draft);
 	}

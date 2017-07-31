@@ -1,0 +1,53 @@
+<%
+	var author = locals.config.site.author;
+	var article = locals.data.article;
+	var tags = article.tags;
+	var content = article.content;
+	var previous = article.previous;
+	var next = article.next;
+%>
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include('include/header'); %>
+	<title><%= article.title %></title>
+</head>
+<body>
+	<div class="body-wrapper">
+		<%- include('include/secondary'); %>
+		<div class="primary">
+			<div class="main-content">
+				<article class="article">
+					<header class="article-header">
+						<h1 class="article-title"><%= article.title %></h1>
+						<div class="article-meta">
+							<span class="meta publish-date">
+								<i class="fa fa-calendar"></i><%= (new Date(article.createdTime)).toLocaleDateString() %>
+							</span>
+							<span class="meta author">BY <%= author %></span>
+						</div>
+					</header>
+					<section class="article-text article-main">
+						<%- content %>
+					</section>
+					<section class="article-tags">
+						<% for (var i = 0; i < tags.length; i++) { -%>
+							<a href="<%= `/tag/${tags[i]}` %>">#<%= tags[i] %></a>
+						<% } -%>
+					</section>
+					<section class="article-nav">
+					<% if (previous) { -%>
+						<a href="/article/<%= previous.filename %>.html" title="上一篇:<%= previous.title %>" class="prev-article"></a>
+					<% } %>
+					<% if (next) { -%>
+						<a href="/article/<%= next.filename %>.html" title="下一篇:<%= next.title %>" class="next-article"></a>
+					<% } %>						
+					</section>
+				</article>
+			</div>
+			<%- include('include/footer') %>
+		</div>
+	</div>
+	<%- include('include/script'); %>
+</body>
+</html>

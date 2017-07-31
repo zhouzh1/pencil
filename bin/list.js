@@ -29,7 +29,7 @@ function list(dir) {
 	if (files.length > 0) {
 		for (let file of files) {
 			let title = path.parse(file).name.split('_').join(' ');
-			console.log(`  ${title}`);
+			console.log(`  "${title}"`);
 		}
 	}
 	else {

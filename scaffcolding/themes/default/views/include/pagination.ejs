@@ -1,0 +1,31 @@
+<%
+	var pageCounts = locals.data.pageCounts;
+	var currentPage = locals.data.currentPage;
+	if (locals.data.currentTag) {
+		var urlPrefix = `/tag/${locals.data.currentTag}`;
+	}
+	else if (locals.data.currentCategory) {
+		var urlPrefix = `/category/${locals.data.currentCategory}`;
+	}
+	else {
+		var urlPrefix = '';
+	}
+%>
+<% if (pageCounts && pageCounts > 1) { -%>
+<div class="pagination">
+<% if (currentPage > 1) { -%>
+	<a href="<%= `${urlPrefix}/page/${currentPage - 1} `%>" class="page prev-page"><i class="fa fa-angle-left"></i></a>
+<% } -%>
+<% for (var i = 1; i <= pageCounts; i++) { -%>
+	<% if (i === currentPage) { -%>
+		<a href="javascript:void(0)" class="page current-page"><%= i %></a>
+	<% } else { -%>
+		<a href="<%= `${urlPrefix}/page/${i}` %>" class="page"><%= i %></a>
+	<% } -%>
+<% } -%>
+<% if (currentPage < pageCounts) { -%>
+	<a href="<%= `${urlPrefix}/page/${currentPage + 1}` %>" class="page next-page"><i class="fa fa-angle-right"></i></a>
+<% } -%>
+</div>
+<% } -%>
+	

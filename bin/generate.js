@@ -12,34 +12,68 @@ checkroot.check();
 
 const RSS = require('rss');
 const ejs = require('ejs');
+const path = require('path');
 const fse = require('fs-extra');
 const utils = require('../lib/utils');
 const logger = require('../lib/logger');
 
-// assemble common data for all pages
+// cache setting
+const LRU = require('lru-cache');
+ejs.cache = LRU(500);
+
+// extract all essential data
 const config = utils.getConfig();
 const articles = utils.getArticles();
 const pages = utils.getPages();
 const tags = utils.getTags();
 const categories = utils.getCategories();
 const archives = utils.getArchives();
-// extract links of independent pages
-const pageLinks = (function() {
-	let map = {};
-	for (let page of pages) {
-		map[page.title] = `/page/${page.filename}.html`;
+const pageLinks = utils.getPageLinks();
+// assemble data
+let data = { tags, archives, categories, pageLinks };
+// invoke plugins
+let plugins = {};
+const pluginsdir = './plugins';
+if (fse.existsSync(pluginsdir)) {
+	const cwd = process.cwd();
+	const files = fse.readdirSync(pluginsdir);
+	for (let file of files) {
+		let pluginName = path.parse(file).name;
+		// every plugin is a function and called with 7 arguments
+		try {
+			let func = require(path.join(cwd, `./plugins/${pluginName}`));
+			if (typeof func === 'function') {
+				let result = func(config, articles, pages, tags, categories, archives, pageLinks);
+				// insert result of plugin function
+				plugins[pluginName] = result;
+			}
+			else {
+				logger.error(`Plugin Error: ${pluginName} - ${func} is not a function`);
+				process.exit();
+			}
+		}
+		catch (error) {
+			logger.error(`Plugin Error: ${pluginName} - ${error.toString()}`);
+			process.exit();
+		}
 	}
-	return map;
-})();
-let common = {
-	config: config,
-	data: {
-		tags: tags,
-		pageLinks: pageLinks,
-		archives: archives,
-		categories: categories,
+}
+
+// add copy function to object
+Object.defineProperty(Object.prototype, 'copy', {
+	configurable: false,
+	enumerable: false,
+	writable: false,
+	value: 	function() {
+		let duplicate = {};
+		for (let key in this) {
+			if (this.hasOwnProperty(key)) {
+				duplicate[key] = this[key]
+			}
+		}
+		return duplicate;
 	}
-};
+});
 
 // cache variables
 const site = config.site;
@@ -61,14 +95,13 @@ function help() {
  * @param  {[type]} type           'article' or 'page'
  */
 function transform(item, template, templateString, type) {
-	let locals = {
-		config: config,
-		data: common.data
-	};
+	let locals = { config, plugins, data: data.copy() };
 	locals.data[type] = item;
+	// add label of page
+	locals.data.label = item.title;
 	try {
 		let html = ejs.render(templateString, locals, { filename: template });
-		fse.outputFileSync(`./public/${type}/${item.filename}.html`, html);
+		fse.outputFileSync(`./public/${type}/${item.filename}`, html);
 	}
 	catch (error) {
 		logger.error(error.toString());
@@ -77,151 +110,174 @@ function transform(item, template, templateString, type) {
 }
 
 function generateArticles() {
-	logger.info('generating articles...');
-	const template = `./public/theme/${theme}/article.ejs`;
-	const templateString = fse.readFileSync(template, 'utf8');
-	for (let article of articles) {
-		transform(article, template, templateString, 'article');
+	if (articles.length > 0) {
+		logger.info('generating articles...');
+		const template = `./themes/${theme}/views/article.ejs`;
+		const templateString = fse.readFileSync(template, 'utf8');
+		for (let article of articles) {
+			transform(article, template, templateString, 'article');
+		}
 	}
 }
 
 function generatePages() {
-	logger.info('generating pages...');
-	const template = `./public/theme/${theme}/page.ejs`;
-	const templateString = fse.readFileSync(template, 'utf8');
-	const pages = utils.getPages();
-	for (let page of pages) {
-		transform(page, template, templateString, 'page');
+	if (pages.length > 0) {
+		logger.info('generating pages...');
+		const template = `./themes/${theme}/views/page.ejs`;
+		const templateString = fse.readFileSync(template, 'utf8');
+		for (let page of pages) {
+			transform(page, template, templateString, 'page');
+		}
 	}
 }
 
 function generateTags() {
-	const template = `./public/theme/${theme}/tag.ejs`;
-	if (!fse.existsSync(template)) {
-		return false;
-	}
-	logger.info('generating tag pages...');
-	const templateString = fse.readFileSync(template, 'utf8');
-	let locals = {
-		config: config,
-		data: common.data
-	};
-	for (let tag in tags) {
-		locals.data.currentTag = tag;
-		let articles = tags[tag];
-		// if pageSize > 0, displaying by paging
-		if (pageSize > 0) {
-			let pageCounts = Math.ceil(articles.length / pageSize);
-			locals.data.pageCounts = pageCounts;
-			for (let i = 0; i < pageCounts; i++) {
-				locals.data.articles = articles.slice(i * pageSize, (i + 1) * pageSize);
-				locals.data.currentPage = i + 1;
+	// if there are some tags, then generate pages of tags
+	if (Object.keys(tags).length > 0) {
+		logger.info('generating tag pages...');
+		const template = `./themes/${theme}/views/index.ejs`;
+		const templateString = fse.readFileSync(template, 'utf8');
+		let locals = { config, plugins, data: data.copy() };
+		locals.data.label = 'tag';
+		// if theme in use contains 'tag.ejs', then generate summary page of tags
+		let tagTemplate = `./themes/${theme}/views/tag.ejs`;
+		if (fse.existsSync(tagTemplate)) {
+			let tagTemplateString = fse.readFileSync(tagTemplate, 'utf8');
+			try {
+				let html = ejs.render(tagTemplateString, locals, { filename: tagTemplate });
+				fse.outputFileSync('./public/tag/index.html', html);
+			}
+			catch (error) {
+				logger.error(error.toString());
+				process.exit();
+			}
+		}
+		// generate index pages of tags
+		for (let tag in tags) {
+			locals.data.currentTag = tag;
+			let articles = tags[tag];
+			// if pageSize > 0, displaying by paging
+			if (pageSize > 0) {
+				let pageCounts = Math.ceil(articles.length / pageSize);
+				locals.data.pageCounts = pageCounts;
+				for (let i = 0; i < pageCounts; i++) {
+					locals.data.articles = articles.slice(i * pageSize, (i + 1) * pageSize);
+					locals.data.currentPage = i + 1;
+					try {
+						let html = ejs.render(templateString, locals, { filename: template });
+						fse.outputFileSync(`./public/tag/${tag}/page/${i + 1}/index.html`, html);
+					}
+					catch (error) {
+						logger.error(error.toString());
+						process.exit();
+					}
+				}
+				// make http://<domain>/tag/<tag> accessible
+				let from = `./public/tag/${tag}/page/1/index.html`;
+				let to = `./public/tag/${tag}/index.html`;
+				fse.copySync(from, to);
+			}
+			else {
+				locals.data.articles = articles;
 				try {
 					let html = ejs.render(templateString, locals, { filename: template });
-					fse.outputFileSync(`./public/tag/${tag}/page/${i + 1}/index.html`, html);
+					fse.outputFileSync(`./public/tag/${tag}/index.html`, html);
 				}
 				catch (error) {
 					logger.error(error.toString());
 					process.exit();
 				}
-			}
-			// make http://<domain>/tag/<tag> accessible
-			let from = `./public/tag/${tag}/page/1/index.html`;
-			let to = `./public/tag/${tag}/index.html`;
-			fse.copySync(from, to);
-		}
-		else {
-			locals.data.articles = articles;
-			try {
-				let html = ejs.render(templateString, locals, { filename: template });
-				fse.outputFileSync(`./public/tag/${tag}/index.html`, html);
-			}
-			catch (error) {
-				logger.error(error.toString());
-				process.exit();
 			}
 		}
 	}
 }
 
 function generateCategories() {
-	const template = `./public/theme/${theme}/category.ejs`;
-	if (!fse.existsSync(template)) {
-		return false;
-	}
-	logger.info('generating category pages...');
-	const templateString = fse.readFileSync(template, 'utf8');
-	let locals = {
-		config: config,
-		data: common.data
-	};
-	for (let category in categories) {
-		locals.data.currentCategory = category;
-		let articles = categories[category];
-		// if pageSize > 0, displaying by paging
-		if (pageSize > 0) {
-			let pageCounts = Math.ceil(articles.length / pageSize);
-			locals.data.pageCounts = pageCounts;
-			for (let i = 0; i < pageCounts; i++) {
-				locals.data.articles = articles.slice(i * pageSize, (i + 1) * pageSize);
-				locals.data.currentPage = i + 1;
-				try {
-					let html = ejs.render(templateString, locals, { filename: template });
-					fse.outputFileSync(`./public/category/${category}/page/${i + 1}/index.html`, html);
-				}
-				catch (error) {
-					logger.error(error.toString());
-					process.exit();
-				}
-			}
-			// make http://<domain>/category/<tag> accessible
-			let from = `./public/category/${category}/page/1/index.html`;
-			let to = `./public/category/${category}/index.html`;
-			fse.copySync(from, to);
-		}
-		else {
-			locals.data.articles = articles;
+	// if there are some categories, then generate pages of categories
+	if (Object.keys(categories).length > 0) {
+		logger.info('generating category pages...');
+		const template = `./themes/${theme}/views/index.ejs`;
+		const templateString = fse.readFileSync(template, 'utf8');
+		let locals = { config, plugins, data: data.copy() };
+		locals.data.label = 'category';
+		// if theme in use contains 'category.ejs', then generate summary page of categories
+		let categoryTemplate = `./themes/${theme}/views/category.ejs`;
+		if (fse.existsSync(categoryTemplate)) {
+			let categoryTemplateString = fse.readFileSync(categoryTemplate, 'utf8');
 			try {
-				let html = ejs.render(templateString, locals, { filename: template });
-				fse.outputFileSync(`./public/category/${category}/index.html`, html);
+				let html = ejs.render(categoryTemplateString, locals, { filename: categoryTemplate });
+				fse.outputFileSync('./public/category/index.html', html);
 			}
 			catch (error) {
 				logger.error(error.toString());
 				process.exit();
 			}
 		}
+		// generate index pages of categories
+		for (let category in categories) {
+			locals.data.currentCategory = category;
+			let articles = categories[category];
+			// if pageSize > 0, displaying by paging
+			if (pageSize > 0) {
+				let pageCounts = Math.ceil(articles.length / pageSize);
+				locals.data.pageCounts = pageCounts;
+				for (let i = 0; i < pageCounts; i++) {
+					locals.data.articles = articles.slice(i * pageSize, (i + 1) * pageSize);
+					locals.data.currentPage = i + 1;
+					try {
+						let html = ejs.render(templateString, locals, { filename: template });
+						fse.outputFileSync(`./public/category/${category}/page/${i + 1}/index.html`, html);
+					}
+					catch (error) {
+						logger.error(error.toString());
+						process.exit();
+					}
+				}
+				// make http://<domain>/category/<tag> accessible
+				let from = `./public/category/${category}/page/1/index.html`;
+				let to = `./public/category/${category}/index.html`;
+				fse.copySync(from, to);
+			}
+			else {
+				locals.data.articles = articles;
+				try {
+					let html = ejs.render(templateString, locals, { filename: template });
+					fse.outputFileSync(`./public/category/${category}/index.html`, html);
+				}
+				catch (error) {
+					logger.error(error.toString());
+					process.exit();
+				}
+			}
+		}
 	}
 }
 
 function generateArchives() {
-	const template = `./public/theme/${theme}/archive.ejs`;
-	if (!fse.existsSync(template)) {
-		return false;
-	}
-	logger.info('generating archive page...');
-	const templateString = fse.readFileSync(template, 'utf8');
-	let locals = {
-		config: config,
-		data: common.data
-	};
-	try {
-		let html = ejs.render(templateString, locals, { filename: template });
-		fse.outputFileSync('./public/archive/index.html', html);
-	}
-	catch (error) {
-		logger.error(error.toString());
-		process.exit();
+	// if theme in use contains 'archive.ejs', then generate archive page
+	const template = `./themes/${theme}/views/archive.ejs`;
+	if (fse.existsSync(template)) {
+		logger.info('generating archive page...');
+		const templateString = fse.readFileSync(template, 'utf8');
+		let locals = { config, plugins, data: data.copy() };
+		locals.data.label = 'archive';
+		try {
+			let html = ejs.render(templateString, locals, { filename: template });
+			fse.outputFileSync('./public/archive/index.html', html);
+		}
+		catch (error) {
+			logger.error(error.toString());
+			process.exit();
+		}
 	}
 }
 
 function generateIndex() {
 	logger.info('generating index pages...');
-	const template = `./public/theme/${theme}/index.ejs`;
+	const template = `./themes/${theme}/views/index.ejs`;
 	const templateString = fse.readFileSync(template, 'utf8');
-	let locals = {
-		config: config,
-		data: common.data
-	};
+	let locals = { config, plugins, data: data.copy() };
+	locals.data.label = 'index';
 	// if exist some articles and pageSize > 0, display by paging
 	if (articles.length > 0 && pageSize > 0) {
 		let pageCounts = Math.ceil(articles.length / pageSize);
@@ -297,6 +353,8 @@ function runner(argvs) {
 		utils.checkTheme();
 		// clear
 		utils.clear();
+		// copy theme assets
+		fse.copy(`./themes/${theme}/theme_assets`, './public/theme_assets');
 		// generate pages
 		generateArticles();
 		generatePages();
