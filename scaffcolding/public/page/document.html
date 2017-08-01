@@ -9,7 +9,6 @@
 <meta name="keyword" content="software,development">
 <meta name="description" content="description of site">
 <meta name="author" content="zhouzh1">
-<link rel="stylesheet" href="http://fonts.googlefonts.net/css?family=Playball&text=pencil">
 <link rel="stylesheet" href="/theme_assets/css/normalize.css">
 <link rel="stylesheet" href="/theme_assets/css/font-awesome-4.7.0/css/font-awesome.css">
 <link rel="stylesheet" href="/theme_assets/css/site.css">
@@ -83,8 +82,19 @@
 <h1 id="install">Install</h1>
 <p><code>npm install pencil --global</code></p>
 <h1 id="usage">Usage</h1>
-<p>Before using pencil, you must ensure that you have installed Node.js and Git. Git will be used to manage versions of your site files and deploy your blog to Github or your own server.</p>
-<h2 id="-commands">- Commands</h2>
+<p>Before using pencil, you must ensure that you have installed Node.js and Git client. Git client will be used to manage versions of your site files and deploy your blog to Github or your own server.</p>
+<h2 id="-scaffcolding">- Scaffcolding</h2>
+<p>Scaffcolding contains directory tree of blog site, it is shown as following.</p>
+<pre><code>.
+|____site
+  |____config.yml      <span class="comment"># configuration file</span>
+  |____<span class="keyword">public</span>          <span class="comment"># root directory of site</span>
+    |____site_assets   <span class="comment"># static assets of site</span>
+    |____theme_assets  <span class="comment"># static assets of theme in use</span>
+  |____source          <span class="comment"># markdown source file</span>
+  |____plugins         <span class="comment"># plugins for site</span>
+  |____themes          <span class="comment"># themes for blog</span>
+</code></pre><h2 id="-commands">- Commands</h2>
 <ul>
 <li><code>pencil help [command]</code> Show help information</li>
 <li><code>pencil init &lt;dir&gt;</code> Initiate a new blog, <code>&lt;dir&gt;</code> could be absolute or relative path, but must be empty. After initiation, you need to change your working directory to <code>&lt;dir&gt;</code></li>
@@ -97,19 +107,11 @@
 <li><code>penicl edit &lt;type&gt; &lt;title&gt;</code> Open default editor to edit markdown</li>
 <li><code>pencil delete &lt;type&gt; &lt;title&gt;</code> Delete drafts, articles and independent pages</li>
 </ul>
+<h2 id="-deploy">- Deploy</h2>
+<p>If you use private vps to host site, please install git server firstly, otherwise use <a href="https://pages.github.com/">GithubPages</a>.</p>
+<p>For reason that github pages allows user and organization site to be built from master branch only, when you execute <code>pencil push</code>, the local master branch will be pushed to remote source branch and directory &#39;./public&#39; will be pushed to remote master branch, in fact, <code>git push origin master:source</code> and <code>git substree push --prefix public origin master</code> are executed underwater. </p>
 <h1 id="customization">Customization</h1>
-<h2 id="-scaffcolding">- Scaffcolding</h2>
-<p>Scaffcolding contains directory tree of blog site, it is shown as following.</p>
-<pre><code>.
-|____site
-  |____config.yml      <span class="comment"># configuration file</span>
-  |____<span class="keyword">public</span>          <span class="comment"># root directory of site</span>
-    |____site_assets   <span class="comment"># static assets of site</span>
-    |____theme_assets  <span class="comment"># static assets of theme in use</span>
-  |____source          <span class="comment"># markdown source file</span>
-  |____plugins         <span class="comment"># plugins for site</span>
-  |____themes          <span class="comment"># themes for blog</span>
-</code></pre><h2 id="-configuration">- Configuration</h2>
+<h2 id="-configuration">- Configuration</h2>
 <p><code>/config.yml</code> is the only configuration file in your site, you can modify and add various options according to your fact need. All the information will be loaded to data which is used to render templates.</p>
 <h2 id="-theme">- Theme</h2>
 <p>Pencil used ejs as the template engine of theme, a valid theme must have <code>views</code>, <code>views/index.ejs</code>, <code>views/article.ejs</code>, <code>views/page.ejs</code>, and <code>theme_assets</code>, they will be used to generate index pages, article pages and independent pages respectively, <code>views/archive.ejs</code>, <code>views/tag.ejs</code>, <code>views/category.ejs</code> will be used to generate archive page, summary page of tags and categories if they are exist. If you attach a category or some tags to articles, index pages of categories or tags will be generated automatically.</p>

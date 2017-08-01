@@ -10,13 +10,14 @@ if (process.argv[2] === 'help') {
 const checkroot = require('../lib/checkroot');
 checkroot.check();
 
-const exec = require('child_process').exec;
-const logger = require('../lib/logger');
+const { spawn } = require('child_process');
+const { EOL } = require('os');
 
-/**
- * show help info about push command
- * @return {[type]} [description]
- */
+// options for spawn
+const options = {
+	stdio: 'inherit'
+};
+
 function help () {
 	console.log('Usage: pencil push');
 	console.log('  Description:');
@@ -24,44 +25,37 @@ function help () {
 }
 
 function runner () {
-	const options = { encoding: 'utf8' };
-	console.log('checking...');
-	exec('git status', options, function (error, stdout, stderr) {
-		if (error) {
-			logger.error(stderr);
-			process.exit();
-		}
-		else {
-			console.log('adding...');
-			exec('git add *', options, function (error, stdout, stderr) {
-				if (error) {
-					logger.error(stderr);
-					process.exit();
-				}
-				else {
-					console.log('committing...');
-					exec(`git commit -m "push at ${new Date().toUTCString()}"`, options, function (error, stdout, stderr) {
-						if (error) {
-							logger.error(stderr);
-							process.exit();
-						}
-						else {
-							console.log('pushing...');
-							exec('git push', options, function (error, stdout, stderr) {
-								if (error) {
-									logger.error(stderr);
+	// git status
+	// git add -A
+	// git commit -m `${time}`
+	// git push origin master
+	// git subtree push --prefix public origin pages
+	console.log(`${EOL}### git status ###`);
+	const status = spawn('git', ['status'], options);
+	status.on('close', function(code){
+		if (code === 0) {
+			console.log(`${EOL}### git add -A ###`);
+			const add = spawn('git', ['add', '-A'], options);
+			add.on('close', function(code){
+				if (code === 0) {
+					console.log(`${EOL}### git commit -m $CURRENT_TIME ###`);
+					const commit = spawn('git', ['commit', '-m', (new Date()).toLocaleString()], options);
+					commit.on('close', function(code){
+						if (code === 0) {
+							console.log(`${EOL}### git push origin master:source ###`);
+							const sourceBranch = spawn('git', ['push', 'origin', 'master:source'], options);
+							sourceBranch.on('close', function(code){
+								if (code === 0) {
+									console.log(`${EOL}### git subtree push --prefix public origin master ###`);
+									spawn('git', ['subtree', 'push', '--prefix', 'public', 'origin', 'master'], options);
 								}
-								else {
-									logger.info(stdout);
-								}
-								process.exit();
 							});
 						}
 					});
 				}
 			});
 		}
-	});
+	}); 
 }
 
 module.exports = { help, runner };

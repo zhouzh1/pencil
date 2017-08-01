@@ -7,7 +7,7 @@
 /*----------  variables  ----------*/
 @baseColor: rgba(255, 255, 255, 0.3);
 @border: 1px solid rgba(255, 255, 255, 0.1);
-@linkColor: #1d8dff;
+@linkColor: #0366d6;
 
 /*----------  reset ----------*/
 a {
@@ -32,12 +32,17 @@ ul, ol {
 }
 code {
 	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-	border-radius: 0.25em;
+	background: rgba(27,31,35,0.05);
+	padding: 0.2em 0;
+	border-radius: 0.2em;
 	overflow-x: scroll;
 	word-wrap: normal;
 }
 code::before, code::after {
 	content: "\00a0";
+}
+pre code::before, pre code::after {
+	content: " ";
 }
 /*----------  body style  ----------*/
 html, body {

@@ -40,7 +40,9 @@ ol {
 }
 code {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  border-radius: 0.25em;
+  background: rgba(27, 31, 35, 0.05);
+  padding: 0.2em 0;
+  border-radius: 0.2em;
   overflow-x: scroll;
   word-wrap: normal;
 }
@@ -48,7 +50,15 @@ code::before,
 code::after {
   content: "\00a0";
 }
+pre code::before,
+pre code::after {
+  content: " ";
+}
 /*----------  body style  ----------*/
+@font-face {
+  font-family: "Playball";
+  src: url("fonts/playball/Playball-Regular.ttf");
+}
 html,
 body {
   font: 1em/1.75em "Hiragino Sans GB", Helvetica, "Microsoft yahei", sans-serif;
@@ -363,7 +373,7 @@ body {
   content: "\00a0\00a0";
 }
 .article-meta a {
-  color: #1d8dff;
+  color: #0366d6;
 }
 .article-meta .meta::after {
   content: "\00a0\00a0";
@@ -382,7 +392,7 @@ body {
   padding: 0.67em 0;
 }
 .article-text a {
-  color: #1d8dff;
+  color: #0366d6;
   padding: 0 0.125em;
 }
 .article-text p,
