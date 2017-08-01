@@ -19,3 +19,7 @@ else {
 	help.help();
 	process.exit();
 }
+
+module.exports = {
+	tips: 'this is a command line tool, please install globally'
+};

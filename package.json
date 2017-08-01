@@ -1,5 +1,5 @@
 {
-  "name": "pencil",
+  "name": "pencil-cli",
   "version": "1.0.0",
   "description": "pencil is a static blog generator",
   "main": "bin/pencil.js",
@@ -17,12 +17,11 @@
     "url": "git+https://github.com/zhouzh1/pencil.git"
   },
   "keywords": [
-    "static",
-    "blog",
-    "generator"
+    "node",
+    "blog"
   ],
   "author": "zhouzh1",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/zhouzh1/pencil/issues"
   },
