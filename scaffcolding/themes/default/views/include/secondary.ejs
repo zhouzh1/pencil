@@ -58,13 +58,15 @@
 		<% if (Object.keys(archives).length > 0) { -%>
 		<aside class="archive">
 			<h1>文章归档</h1>
+			<ul class="archive-list">
 		<% for (var year in archives) { -%>
 		<%
 			var thisYear = archives[year];
 		%>
 			<% for (var month in thisYear) { -%>
-			<a href="/archive/index.html#<%= `${year}` %>"><%= `${year}年${month}月 (${thisYear[month].length})` %></a>
+				<li><a href="/archive/index.html#<%= `${year}` %>"><%= `${year}年${month}月 (${thisYear[month].length})` %></a></li>
 			<% } -%>
+			</ul>
 		<% } -%>
 		</aside>
 		<% } -%>

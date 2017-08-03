@@ -7,7 +7,7 @@ site:
     author: zhouzh1
     avatar: image url of avatar
     rssSize: 10 # count of items to be added rss.xml
-    pageSize: 1 # count of items in index page
+    pageSize: 10 # count of items in index page
     theme: default # theme of blog
     copyright: 2017 powered by pencil
 # contact

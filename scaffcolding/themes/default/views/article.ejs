@@ -37,10 +37,10 @@
 					</section>
 					<section class="article-nav">
 					<% if (previous) { -%>
-						<a href="/article/<%= previous.filename %>.html" title="上一篇:<%= previous.title %>" class="prev-article"></a>
+						<a href="/article/<%= previous.filename %>" title="上一篇:<%= previous.title %>" class="prev-article"></a>
 					<% } %>
 					<% if (next) { -%>
-						<a href="/article/<%= next.filename %>.html" title="下一篇:<%= next.title %>" class="next-article"></a>
+						<a href="/article/<%= next.filename %>" title="下一篇:<%= next.title %>" class="next-article"></a>
 					<% } %>						
 					</section>
 				</article>
