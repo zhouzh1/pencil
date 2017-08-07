@@ -33,7 +33,7 @@ function runner (argvs) {
 			logger.error(`not a empty directory: ${root}`);
 		}
 		else {
-			fse.copySync(path.join(__dirname, '../scaffcolding'), root);
+			fse.copySync(path.join(__dirname, '../scaffolding'), root);
 			logger.info(`successfully! now you should switch to ${root}`);
 		}
 		process.exit();

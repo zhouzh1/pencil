@@ -12,9 +12,9 @@ Pencil is a generator of static blog. In fact, it's a command line program writt
 
 Before using pencil, you must ensure that you have installed Node.js and Git client. Git client will be used to manage versions of your site files and deploy your blog to Github or your own server.
 
-## - Scaffcolding
+## - Scaffolding
 
-Scaffcolding contains directory tree of blog site, it is shown as following.
+Scaffolding contains directory tree of blog site, it is shown as following.
 
 ```
 .
