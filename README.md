@@ -2,7 +2,7 @@
 
 Pencil is a generator of static blog. In fact, it's a command line program written in Node.js. With the use of pencil, users need to edit markdown and execute corresponding command only, pencil will generate a blog site for you.
 
-![shortcut](./scaffcolding/public/site_assets/screenshot.png)
+![shortcut](./scaffolding/public/site_assets/screenshot.png)
 
 # Install
 
