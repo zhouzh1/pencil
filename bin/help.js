@@ -17,7 +17,7 @@ function help () {
 	console.log('       edit: open default editor to edit markdown');
 	console.log('       list: list drafts, articles and pages');
 	console.log('     delete: delete drafts, articles and pages');
-	console.log('       push: push to remote server');
+	console.log('     deploy: deploy to remote server');
 }
 
 /**

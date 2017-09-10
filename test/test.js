@@ -13,7 +13,7 @@ const test_help = path.join(__dirname, './test_help.js');
 
 const cwd = process.cwd();
 const execOptions = { encoding: 'utf8' };
-const commands = ['help', 'init', 'create', 'publish', 'generate', 'list', 'edit', 'delete', 'server', 'push'];
+const commands = ['help', 'init', 'create', 'publish', 'generate', 'list', 'edit', 'delete', 'server', 'deploy'];
 let testdir;
 
 describe('Commands:', () => {

@@ -31,12 +31,11 @@ function eval(cmd, context, filename, callback) {
 	if (cmd === `yes${EOL}`) {
 		// input 'yes', delete
 		fse.removeSync(context.markdown);
-		logger.info('successfully!');
+		console.log('[+] successfully!');
 		// if exist html file, remove it and re-generate
 		let html = context.html;
 		if (html && fse.existsSync(html)) {
-			fse.removeSync(html);
-			logger.info('generate site again...');
+			console.log('[+] generate site again...');
 			require('./generate').runner([]);
 		}
 		process.exit();
@@ -59,12 +58,12 @@ function remove(type, title) {
 		logger.error(`no such ${fragments.reverse().join(' ')}: ${title}`);
 		process.exit();
 	}
-	else if (fragments[0] === 'draft') {
+	else if (fragments[0] !== 'draft') {
 		// get path of html file
 		let source = fse.readFileSync(markdown, 'utf8');
 		let frontmatter = yaml.safeLoad(frontmatterRegExp.exec(source)[1]);
 		let filename = (frontmatter.filename || frontmatter.title).split(' ').join('_');
-		let html = `./public/${type}/${filename}.html`;
+		html = `./public/${type}/${filename}.html`;
 	}
 	let options = {
 		prompt: 'Could not restore, sure? (yes or no)',

@@ -1,20 +1,16 @@
 # site
 site:
-    host: http://zhouzh.me
+    host: https://<yourname>.github.io
     title: pencil
-    keywords: ['software', 'development']
+    keywords: ['blog']
     description: description of site
-    author: zhouzh1
-    avatar: image url of avatar
-    rssSize: 10 # count of items to be added rss.xml
-    pageSize: 10 # count of items in index page
-    theme: default # theme of blog
-    copyright: 2017 powered by pencil
+    author: your name
+    avatar: your avatar
+    rssSize: 10
+    pageSize: 10
+    theme: default
+    copyright: Copyright©2017
 # contact
 contact:
-    email: zzhouzhii@gmail.com
-    github: https://github.com/zhouzh1
-    weibo:  http://www.weibo.com
-    twitter: http://www.twitter.com
-    facebook: http://www.facebook.com
-# other configuration
+    email: yourname@gmail.com
+    github: https://www.github.com/yourname

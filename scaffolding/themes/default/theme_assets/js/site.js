@@ -4,6 +4,7 @@
  */
 
 $(function () {
+	hljs.initHighlightingOnLoad();
 	// toggle navbar
 	let navbar = $('#navbar').get(0);
 	let navbarHeight = navbar.scrollHeight;

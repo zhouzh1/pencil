@@ -1,20 +1,27 @@
-# Pencil
+# About
 
-Pencil is a generator of static blog. In fact, it's a command line program written in Node.js. With the use of pencil, users need to edit markdown and execute corresponding command only, pencil will generate a blog site for you.
+This is a Node.js static blog generator. By means of [GithubPages](https://pages.github.com/), you only need to edit articles in markdown and execute some commands in terminal, a online blog site would be prepared for you. See[Demo](https://zhouzh1.github.io).
 
-![shortcut](./scaffolding/public/site_assets/screenshot.png)
+# Prerequisites
+
+1. Node 6.x and above
+2. Git client
 
 # Install
 
-`npm install pencil-cli --global`
+`npm install pencil-cli --global`.
 
 # Usage
 
-Before using pencil, you must ensure that you have installed Node.js and Git client. Git client will be used to manage versions of your site files and deploy your blog to Github or your own server.
+1. Create a github repository named `<yourname>.github.io` and clone
+2. Change to `source` branch, `git checkout -b source`
+3. Initiate a new site with `<yourname.github.io>`, `pencil init ./`
+4. Config site in `config.yml`
+4. Display help information, `pencil help`
 
-## - Scaffolding
+# Directory structure
 
-Scaffolding contains directory tree of blog site, it is shown as following.
+After initiation, following directory structure has been created.
 
 ```
 .
@@ -28,42 +35,47 @@ Scaffolding contains directory tree of blog site, it is shown as following.
   |____themes          # themes for blog
 ```
 
-## - Commands
+# Commands
 
-- `pencil help [command]` Show help information
-- `pencil init <dir>` Initiate a new blog, `<dir>` could be absolute or relative path, but must be empty. After initiation, you need to change your working directory to `<dir>`
-- `pencil create <type> <title>` Create a new article or independent page, but just is a draft, `<type>` could be 'article' or 'page', `<title>` will be article's or page's title. After creation, program will generate a markdown file for corresponding type and open you default editor with that markdown file. In addition, program has written frontmatter to draft, you can attach a category and some tags to article, and specify the final html's filename
+- `pencil help [command]` Display help information
+- `pencil init <dir>` Initiate a new site, `<dir>` must be a empty git repository
+- `pencil create <type> <title>` Create a new draft,  `<type>` is either 'article' or 'page', the default markdown editor will be opened automatically
 - `pencil publish <type> <title>` Publish draft, `<type>` and `<title>` is the same as in `create`
-- `pencil generate` Generate a static blog site for you
-- `pencil server [port]` Start a local server listening on `[port]` to preview your blog site, default `[port]` is 3000
-- `pencil push` Push your blog site to remote server
-- `pencil list [type]` List drafts, articles and independent pages
-- `penicl edit <type> <title>` Open default editor to edit markdown
-- `pencil delete <type> <title>` Delete drafts, articles and independent pages
+- `pencil generate` Generate site, site contents are saved under `./public`
+- `pencil server [port]` Start a local server listening on `[port]` to preview, default `[port]` is 3000
+- `pencil deploy` Deploy to remote server
+- `pencil list [type]` List drafts, articles and pages
+- `penicl edit <type> <title>` Modify article and page
+- `pencil delete <type> <title>` Delete draft, article and page
 
-## - Deploy
+# Deploy
 
-If you use private vps to host site, please install git server firstly, otherwise use [GithubPages](https://pages.github.com/).
+The local repository must work under `source` branch, after `pencil deploy`, local `source` branch would be push to remote `source` branch and `./public` would be push to remote `master` branch.
 
-For reason that github pages allows user and organization site to be built from master branch only, when you execute `pencil push`, the local master branch will be pushed to remote source branch and directory './public' will be pushed to remote master branch, in fact, `git push origin master:source` and `git substree push --prefix public origin master` are executed underwater. 
+# Create themes
 
-# Customization
+The template engine in use is [ejs](https://github.com/tj/ejs), a valid theme must contain follwing directories and files:
 
-## - Configuration
+1. `views`, store all view templates
+2. `theme_assets`, store css, js, images and fonts, etc.
+3. `views/index.ejs`, generate various index pages
+4. `views/article.ejs`, generate article pages
+5. `views/page.ejs`, generate independent pages
 
-`/config.yml` is the only configuration file in your site, you can modify and add various options according to your fact need. All the information will be loaded to data which is used to render templates.
+But following files are optional:
 
-## - Theme
+1. `views/archive.ejs`, generate archive page
+2. `views/tag.ejs`, generate summary page of tags
+3. `views/category.ejs`, generate summary page of categories
+4. `<yourtheme>/config.yml`, config your theme
 
-Pencil used ejs as the template engine of theme, a valid theme must have `views`, `views/index.ejs`, `views/article.ejs`, `views/page.ejs`, and `theme_assets`, they will be used to generate index pages, article pages and independent pages respectively, `views/archive.ejs`, `views/tag.ejs`, `views/category.ejs` will be used to generate archive page, summary page of tags and categories if they are exist. If you attach a category or some tags to articles, index pages of categories or tags will be generated automatically.
+**Attention: all static files referenced in view templates and markdown source files must use absolute path**
 
-When you write your own theme, all template data has been stored in variable `locals`, its value is shown as following. In addition, you can add a `config.yml` in theme directory to adjust theme's final display.
-
-**Attention: all static files referenced in theme templates, articles and independent pages must use absolute path** 
+When write view templates, you must know what is those template data. The main program will process config files of site and theme, markdown source files and execute plugin functions to assemble all data in a object named `locals`, it is the template data object.
 
 ```js
 locals = {
-    // configuration information from config.yml
+    // configuration
     config: {
         site: {
             host: 'http://blog.me',
@@ -78,9 +90,9 @@ locals = {
         // configuration of theme
         themeConfig: { ... }
     },
-    // data generated by pencil's main program
+    // articles and pages
     data: {
-        // label indicates position of current page
+        // label could be one of 'index', 'archive', 'tag', 'category' and ${data.page.title}, indicates that which page is beening generated
         label: 'index',
         // all tags attached to articles
         tags: {
@@ -92,7 +104,7 @@ locals = {
             frontend: [article_1, article_2, article_3, ...],
             database: [article_1, article_2, article_3, ...]
         },
-        // archive information of all articles
+        // archive of all articles
         archives: {
             "2017": {
                 "06": [article_1, article_2, article_3, ...],
@@ -103,11 +115,11 @@ locals = {
                 "09": [article_1, article_2, article_3, ....]
             }
         },
-        // links of independent pages
+        // independent pages
         pageLinks: {
             about: '/page/about.html'
         },
-        // articles data in various index pages
+        // articles in various index pages
         articles: [article_1, article_2, article_3, ....],
         // article data in article page 
         article: {
@@ -117,7 +129,6 @@ locals = {
             createdTime: '2017-01-01 09:00',
             content: 'html string of content',
             abstract: 'html string of abstract',
-            // filename of final article page generated
             filename: 'study_javascript.html'
         },
         // page data in independent page
@@ -135,9 +146,9 @@ locals = {
 }
 ```
 
-## - Plugin
+# Create plugins
 
-In fact, every plugin should be a function, once you place a plugin in `/plugins` directory, plugin function will be called with seven arguments automatically, the seven arguments are `config`, `articles`,  `pages`, `tags`, `categories`, `archives`, `pageLinks`. Return value of plugin function will be inserted to `locals.plugins`.
+Every plugin module should export a function, once you place a plugin in `/plugins` directory, plugin module will be required and function exported will be called with seven arguments automatically, the seven arguments are `config`, `articles`,  `pages`, `tags`, `categories`, `archives`, `pageLinks`, return value of plugin function will be inserted to `locals.plugins`.
 
 # License
 

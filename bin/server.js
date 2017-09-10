@@ -41,7 +41,7 @@ function runner (argvs) {
 		// set './public' as '/www' of server
 		app.use(express.static('public'));
 		app.listen(port, function(error) {
-			logger.info(`server is listening on port ${port}...`);
+			console.log(`[+] server is listening on port ${port}...`);
 			// open default browser
 			open(`http://localhost:${port}`);
 		});

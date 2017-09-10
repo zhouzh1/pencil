@@ -34,7 +34,7 @@ function runner (argvs) {
 		}
 		else {
 			fse.copySync(path.join(__dirname, '../scaffolding'), root);
-			logger.info(`successfully! now you should switch to ${root}`);
+			console.log(`[+] successfully! now you should switch to ${root}`);
 		}
 		process.exit();
 	}

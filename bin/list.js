@@ -29,31 +29,31 @@ function list(dir) {
 	if (files.length > 0) {
 		for (let file of files) {
 			let title = path.parse(file).name.split('_').join(' ');
-			console.log(`  "${title}"`);
+			console.log(`    "${title}"`);
 		}
 	}
 	else {
-		console.log('  no files');
+		console.log('    no files');
 	}
 }
 
 function listDraftArticle() {
-	console.log('Article drafts:');
+	console.log('[+] Article drafts:');
 	list('./source/draft/article');
 }
 
 function listDraftPage() {
-	console.log('Page drafts:');
+	console.log('[+] Page drafts:');
 	list('./source/draft/page');
 }
 
 function listArticle() {
-	console.log('Articles:');
+	console.log('[+] Articles:');
 	list('./source/article');
 }
 
 function listPage() {
-	console.log('Pages:');
+	console.log('[+] Pages:');
 	list('./source/page');
 }
 

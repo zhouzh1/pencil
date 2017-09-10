@@ -111,7 +111,7 @@ function transform(item, template, templateString, type) {
 
 function generateArticles() {
 	if (articles.length > 0) {
-		logger.info('generating articles...');
+		console.log('[+] generating articles...');
 		const template = `./themes/${theme}/views/article.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		for (let article of articles) {
@@ -122,7 +122,7 @@ function generateArticles() {
 
 function generatePages() {
 	if (pages.length > 0) {
-		logger.info('generating pages...');
+		console.log('[+] generating pages...');
 		const template = `./themes/${theme}/views/page.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		for (let page of pages) {
@@ -132,9 +132,9 @@ function generatePages() {
 }
 
 function generateTags() {
-	// if there are some tags, then generate pages of tags
+	// if there are some tags, then generate index pages of tags
 	if (Object.keys(tags).length > 0) {
-		logger.info('generating tag pages...');
+		console.log('[+] generating tag pages...');
 		const template = `./themes/${theme}/views/index.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		let locals = { config, plugins, data: data.copy() };
@@ -193,9 +193,9 @@ function generateTags() {
 }
 
 function generateCategories() {
-	// if there are some categories, then generate pages of categories
+	// if there are some categories, then generate index pages of categories
 	if (Object.keys(categories).length > 0) {
-		logger.info('generating category pages...');
+		console.log('[+] generating category pages...');
 		const template = `./themes/${theme}/views/index.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		let locals = { config, plugins, data: data.copy() };
@@ -257,7 +257,7 @@ function generateArchives() {
 	// if theme in use contains 'archive.ejs', then generate archive page
 	const template = `./themes/${theme}/views/archive.ejs`;
 	if (fse.existsSync(template)) {
-		logger.info('generating archive page...');
+		console.log('[+] generating archive page...');
 		const templateString = fse.readFileSync(template, 'utf8');
 		let locals = { config, plugins, data: data.copy() };
 		locals.data.label = 'archive';
@@ -273,7 +273,7 @@ function generateArchives() {
 }
 
 function generateIndex() {
-	logger.info('generating index pages...');
+	console.log('[+] generating index pages...');
 	const template = `./themes/${theme}/views/index.ejs`;
 	const templateString = fse.readFileSync(template, 'utf8');
 	let locals = { config, plugins, data: data.copy() };
@@ -313,7 +313,7 @@ function generateIndex() {
 }
 
 function generateRss() {
-	logger.info('generating rss feed...');
+	console.log('[+] generating rss feed...');
 	let feed = new RSS({
 		title: site.title,
 		description: site.description,
@@ -354,7 +354,7 @@ function runner(argvs) {
 		// clear
 		utils.clear();
 		// copy theme assets
-		fse.copy(`./themes/${theme}/theme_assets`, './public/theme_assets');
+		fse.copySync(`./themes/${theme}/theme_assets`, './public/theme_assets');
 		// generate pages
 		generateArticles();
 		generatePages();
@@ -364,7 +364,7 @@ function runner(argvs) {
 		generateArchives();
 		generateRss();
 		const endTime = new Date().getTime();
-		console.log(`End! All cost ${(endTime - startTime) / 1000}s`);
+		console.log(`[+] generate successfully! All cost ${(endTime - startTime) / 1000}s`);
 	}
 }
 
