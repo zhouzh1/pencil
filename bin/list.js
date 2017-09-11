@@ -28,7 +28,7 @@ function list(dir) {
 	const files = fse.readdirSync(dir);
 	if (files.length > 0) {
 		for (let file of files) {
-			let title = path.parse(file).name.split('_').join(' ');
+			let title = path.parse(file).name.split('-').join(' ');
 			console.log(`    "${title}"`);
 		}
 	}

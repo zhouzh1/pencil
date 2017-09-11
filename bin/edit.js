@@ -25,7 +25,7 @@ function help() {
 
 
 function edit(fragment, title) {
-	let filename = title.split(' ').join('_');
+	let filename = title.split(' ').join('-');
 	let markdown = `./source/${fragment}/${filename}.md`;
 	if (!fse.existsSync(markdown)) {
 		let type = fragment.split('/').reverse().join(' ');

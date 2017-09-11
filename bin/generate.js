@@ -330,11 +330,10 @@ function generateRss() {
 	}
 	for (let i = 0; i < rssSize; i++) {
 		let article = articles[i];
-		let filename = article.filename.split(' ').join('_');
 		feed.item({
 			title: article.title,
 			description: article.content,
-			url: `${public}/${filename}.html`,
+			url: `${public}/${article.filename}.html`,
 			date: new Date(article.createdTime).toUTCString()
 		});
 	}

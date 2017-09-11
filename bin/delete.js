@@ -52,7 +52,7 @@ function eval(cmd, context, filename, callback) {
 function remove(type, title) {
 	// check if exist such article or page
 	let fragments = type.split('-');
-	let markdown = `./source/${fragments.join('/')}/${title.split(' ').join('_')}.md`;
+	let markdown = `./source/${fragments.join('/')}/${title.split(' ').join('-')}.md`;
 	let html = null;
 	if (!fse.existsSync(markdown)) {
 		logger.error(`no such ${fragments.reverse().join(' ')}: ${title}`);
@@ -62,7 +62,7 @@ function remove(type, title) {
 		// get path of html file
 		let source = fse.readFileSync(markdown, 'utf8');
 		let frontmatter = yaml.safeLoad(frontmatterRegExp.exec(source)[1]);
-		let filename = (frontmatter.filename || frontmatter.title).split(' ').join('_');
+		let filename = (frontmatter.filename || frontmatter.title).split(' ').join('-');
 		html = `./public/${type}/${filename}.html`;
 	}
 	let options = {

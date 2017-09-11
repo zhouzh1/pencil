@@ -29,7 +29,7 @@ function help () {
  * @param  {[type]} title title of draft
  */
 function publish(type, title) {
-	let draftname = title.split(' ').join('_');
+	let draftname = title.split(' ').join('-');
 	let draft = `./source/draft/${type}/${draftname}.md`;
 	if (!fse.existsSync(draft)) {
 		logger.error(`no such draft: ${title}`);

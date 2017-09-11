@@ -47,8 +47,8 @@ filename:
 createdTime: ${moment().format('YYYY-MM-DD HH:mm')}
 ---`;
 	}
-	// replace spaces between words with '_'
-	let filename = title.split(' ').join('_');
+	// replace spaces between words with '-'
+	let filename = title.split(' ').join('-');
 	let draft = `./source/draft/${type}/${filename}.md`;
 	let formal = `./source/${type}/${filename}.md`;
 	if (fse.existsSync(draft) || fse.existsSync(formal)) {
