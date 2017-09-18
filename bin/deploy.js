@@ -25,37 +25,44 @@ function help () {
 }
 
 function runner () {
+	// git pull origin source:source
 	// git status
 	// git add -A
 	// git commit -m `${time}`
-	// git push origin master
-	// git subtree push --prefix public origin pages
-	console.log(`${EOL}[+] git status`);
-	const status = spawn('git', ['status'], options);
-	status.on('close', function(code){
+	// git push origin source:source
+	// git subtree push --prefix public origin master
+	console.log(`${EOL}[+] git pull origin source:source`);
+	const pull = spawn('git', ['pull', 'origin', 'source:source'], options);
+	pull.on('close', function(code){
 		if (code === 0) {
-			console.log(`${EOL}[+] git add -A`);
-			const add = spawn('git', ['add', '-A'], options);
-			add.on('close', function(code){
+			console.log(`${EOL}[+] git status`);
+			const status = spawn('git', ['status'], options);
+			status.on('close', function(code){
 				if (code === 0) {
-					console.log(`${EOL}[+] git commit`);
-					const commit = spawn('git', ['commit', '-m', (new Date()).toLocaleString()], options);
-					commit.on('close', function(code){
+					console.log(`${EOL}[+] git add -A`);
+					const add = spawn('git', ['add', '-A'], options);
+					add.on('close', function(code){
 						if (code === 0) {
-							console.log(`${EOL}[+] git push origin source:source`);
-							const sourceBranch = spawn('git', ['push', 'origin', 'source:source'], options);
-							sourceBranch.on('close', function(code){
+							console.log(`${EOL}[+] git commit`);
+							const commit = spawn('git', ['commit', '-m', (new Date()).toLocaleString()], options);
+							commit.on('close', function(code){
 								if (code === 0) {
-									console.log(`${EOL}[+] git subtree push --prefix public origin master`);
-									spawn('git', ['subtree', 'push', '--prefix', 'public', 'origin', 'master'], options);
+									console.log(`${EOL}[+] git push origin source:source`);
+									const sourceBranch = spawn('git', ['push', 'origin', 'source:source'], options);
+									sourceBranch.on('close', function(code){
+										if (code === 0) {
+											console.log(`${EOL}[+] git subtree push --prefix public origin master`);
+											spawn('git', ['subtree', 'push', '--prefix', 'public', 'origin', 'master'], options);
+										}
+									});
 								}
 							});
 						}
 					});
 				}
-			});
+			}); 
 		}
-	}); 
+	});
 }
 
 module.exports = { help, runner };
