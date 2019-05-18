@@ -1,6 +1,11 @@
-/**
- * server command
+/*
+ * 开启本地预览服务器
+ * @Author: zhouzh1 
+ * @Date: 2019-05-18 23:08:01 
+ * @Last Modified by: zhouzh1
+ * @Last Modified time: 2019-05-18 23:31:33
  */
+
 
 if (process.argv[2] === 'help') {
 	help();
@@ -15,11 +20,8 @@ const express = require('express');
 const logger = require('../lib/logger');
 
 function help () {
-	console.log('Usage: pencil server');
-	console.log('  Description:');
-	console.log('    start local server to preview');
-	console.log('  Arguments:');
-	console.log('    [port]  the port server is listening on, default is 3000');
+	console.log('pencil server [port=3000]');
+	console.log('开启本地预览服务器，默认端口3000');
 }
 
 /**
@@ -32,7 +34,7 @@ function runner (argvs) {
 		process.exit();
 	}
 	else if (argvs.length === 1 && (isNaN(Number(argvs[0])) || Number(argvs[0]) < 0 || Number(argvs[0]) >= 65536)) {
-		logger.error('port argument must be >= 0 and < 65536');
+		logger.error('端口必须在[0, 65536]之间');
 		process.exit();
 	}
 	else {
@@ -40,8 +42,8 @@ function runner (argvs) {
 		let app = express();
 		// set './public' as '/www' of server
 		app.use(express.static('public'));
-		app.listen(port, function(error) {
-			console.log(`[+] server is listening on port ${port}...`);
+		app.listen(port, function() {
+			logger.log('本地预览服务启动成功...');
 			// open default browser
 			open(`http://localhost:${port}`);
 		});

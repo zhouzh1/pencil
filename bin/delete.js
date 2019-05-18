@@ -1,6 +1,11 @@
-/**
- * delete command
+/*
+ * 删除文件
+ * @Author: zhouzh1 
+ * @Date: 2019-05-19 00:24:57 
+ * @Last Modified by: zhouzh1
+ * @Last Modified time: 2019-05-19 00:29:34
  */
+
 
 if (process.argv[2] === 'help') {
 	help();
@@ -19,23 +24,21 @@ const EOL = require('os').EOL;
 const frontmatterRegExp = /^-{3}\n([\s\S]+?)\n-{3}/;
 
 function help() {
-	console.log('Usage: pencil delete <type> <title>');
-	console.log('  Description:');
-	console.log('    delete drafts, articles and pages');
-	console.log('  Arguments:');
-	console.log("     <type>  one of ['draft-article', 'draft-page', 'article', 'page']");
-	console.log('    <title>  title of item');
+	console.log('pencil delete <type> <title>');
+	console.log('删除文件');
+	console.log('<type> 文件类型 draft-article | draft-page | article | page');
+	console.log('<title> 文件名');
 }
 
 function eval(cmd, context, filename, callback) {
 	if (cmd === `yes${EOL}`) {
 		// input 'yes', delete
 		fse.removeSync(context.markdown);
-		console.log('[+] successfully!');
+		logger.log('删除成功');
 		// if exist html file, remove it and re-generate
 		let html = context.html;
 		if (html && fse.existsSync(html)) {
-			console.log('[+] generate site again...');
+			logger.log('开始重新构建站点...');
 			require('./generate').runner([]);
 		}
 		process.exit();
@@ -55,7 +58,7 @@ function remove(type, title) {
 	let markdown = `./source/${fragments.join('/')}/${title.split(' ').join('-')}.md`;
 	let html = null;
 	if (!fse.existsSync(markdown)) {
-		logger.error(`no such ${fragments.reverse().join(' ')}: ${title}`);
+		logger.error(`没有此文件：${fragments.reverse().join(' ')}: ${title}`);
 		process.exit();
 	}
 	else if (fragments[0] !== 'draft') {
@@ -66,7 +69,7 @@ function remove(type, title) {
 		html = `./public/${type}/${filename}.html`;
 	}
 	let options = {
-		prompt: 'Could not restore, sure? (yes or no)',
+		prompt: '删除后无法恢复，确定删除吗? (yes or no)',
 		eval: eval
 	};
 	// wait to confirm

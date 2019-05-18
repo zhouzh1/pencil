@@ -1,6 +1,11 @@
-/**
- * publish command
+/*
+ * 发布草稿
+ * @Author: zhouzh1 
+ * @Date: 2019-05-18 23:09:37 
+ * @Last Modified by: zhouzh1
+ * @Last Modified time: 2019-05-18 23:15:01
  */
+
 
 if (process.argv[2] === 'help') {
 	help();
@@ -15,12 +20,8 @@ const yaml = require('js-yaml');
 const logger = require('../lib/logger');
 
 function help () {
-	console.log('Usage: pencil publish <type> <title>');
-	console.log('  Description:');
-	console.log('    publish draft');
-	console.log('  Arguments:');
-	console.log('     <type>  article or page');
-	console.log('    <title>  title of draft');
+	console.log('pencil publish <draftType> <draftTitle>');
+	console.log('发布草稿，draftType是草稿类型，可选的类型有article(文章)和page(页面)，draftTitle是草稿标题');
 }
 
 /**

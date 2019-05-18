@@ -1,7 +1,7 @@
 {
   "name": "pencil-cli",
   "version": "2.0.1",
-  "description": "pencil is a static blog generator",
+  "description": "static blog generator",
   "main": "bin/pencil.js",
   "bin": {
     "pencil": "bin/pencil.js"
@@ -17,8 +17,9 @@
     "url": "git+https://github.com/zhouzh1/pencil.git"
   },
   "keywords": [
-    "node",
-    "blog"
+    "static",
+    "blog",
+    "generator"
   ],
   "author": "zhouzh1",
   "license": "MIT",

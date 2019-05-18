@@ -1,23 +1,28 @@
-/**
- * help comamnd
+/*
+ * 展示帮助信息
+ * @Author: zhouzh1 
+ * @Date: 2019-05-18 23:35:57 
+ * @Last Modified by: zhouzh1
+ * @Last Modified time: 2019-05-18 23:39:51
  */
+
 
 const path = require('path');
 const fse = require('fs-extra');
 
 function help () {
-	console.log('Usage: pencil <command>');
-	console.log('  Commands:');
-	console.log('       help: show help information');
-	console.log('       init: initiate a new blog');
-	console.log('     create: create a new draft');
-	console.log('    publish: publish draft');
-	console.log('   generate: generate all static pages');
-	console.log('     server: start local server to preview');
-	console.log('       edit: open default editor to edit markdown');
-	console.log('       list: list drafts, articles and pages');
-	console.log('     delete: delete drafts, articles and pages');
-	console.log('     deploy: deploy to remote server');
+	console.log('pencil <command>');
+	console.log('command:');
+	console.log('help: 展示帮助信息');
+	console.log('init: 初始化新的Blog站点');
+	console.log('create: 创建一篇新的草稿');
+	console.log('publish: 发布草稿');
+	console.log('generate: 生成静态Html页面');
+	console.log('server: 开启本地预览服务');
+	console.log('edit: 使用系统默认编辑器编辑文件');
+	console.log('list: 展示文件列表');
+	console.log('delete: 删除文件');
+	console.log('deploy: 将Blog站点部署都远程服务器');
 }
 
 /**

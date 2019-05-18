@@ -1,6 +1,11 @@
-/**
- * edit command
+/*
+ * 通过文件类型和文件名来使用默认编辑器编辑文件
+ * @Author: zhouzh1 
+ * @Date: 2019-05-18 23:48:29 
+ * @Last Modified by: zhouzh1
+ * @Last Modified time: 2019-05-18 23:51:00
  */
+
 
 if (process.argv[2] === 'help') {
 	help();
@@ -15,12 +20,10 @@ const open = require('opn');
 const logger = require('../lib/logger');
 
 function help() {
-	console.log('Usage: pencil edit <type> <title>');
-	console.log('  Description:');
-	console.log('    open default editor to edit markdown');
-	console.log('  Arguments:');
-	console.log("     <type>  one of ['draft-article', 'draft-page', 'article', 'page']");
-	console.log('    <title>  title of item');
+	console.log('pencil edit <type> <title>');
+	console.log('使用默认编辑器编辑文件');
+	console.log('<type> 文件类型 draft-article | draft-page | article | page');
+	console.log('<title> 文件名');
 }
 
 

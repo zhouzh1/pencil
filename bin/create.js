@@ -1,6 +1,11 @@
-/**
- * create command
+/*
+ * 创建草稿
+ * @Author: zhouzh1 
+ * @Date: 2019-05-19 00:29:44 
+ * @Last Modified by: zhouzh1
+ * @Last Modified time: 2019-05-19 00:32:25
  */
+
 
 if (process.argv[2] === 'help') {
 	help();
@@ -16,12 +21,10 @@ const moment = require('moment');
 const logger = require('../lib/logger');
 
 function help() {
-	console.log('Usage: pencil create <type> <title>');
-	console.log('  Description:');
-	console.log('    create a new draft');
-	console.log('  Arguments:');
-	console.log('     <type>   article or page');
-	console.log('    <title>   title of draft');
+	console.log('pencil create <type> <title>');
+	console.log('创建一篇新的草稿');
+	console.log('<type> 草稿类型 article | page');
+	console.log('<title> 草稿标题');
 }
 
 /**
@@ -52,11 +55,11 @@ createdTime: ${moment().format('YYYY-MM-DD HH:mm')}
 	let draft = `./source/draft/${type}/${filename}.md`;
 	let formal = `./source/${type}/${filename}.md`;
 	if (fse.existsSync(draft) || fse.existsSync(formal)) {
-		logger.error(`duplicate title: ${title}`);
+		logger.error(`此草稿已经存在: ${title}`);
 	}
 	else {
 		fse.outputFileSync(draft, frontmatter);
-		console.log('[+] successfully!');
+		logger.log('创建成功');
 		// open default editor
 		open(draft);
 	}

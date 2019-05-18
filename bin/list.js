@@ -1,5 +1,9 @@
-/**
- * list command
+/*
+ * 列出所有的文件
+ * @Author: zhouzh1 
+ * @Date: 2019-05-18 23:16:38 
+ * @Last Modified by: zhouzh1
+ * @Last Modified time: 2019-05-18 23:23:59
  */
 
 if (process.argv[2] === 'help') {
@@ -13,15 +17,13 @@ const path = require('path');
 const fse = require('fs-extra');
 
 function help() {
-	console.log('Usage: pencil list [type]');
-	console.log('  Description:');
-	console.log('    list drafts, articles and pages');
-	console.log('  Arguments:');
-	console.log('               --  list all drafts, articles and pages');
-	console.log('    draft-article  list article drafts');
-	console.log('       draft-page  list page drafts');
-	console.log('          article  list articles');
-	console.log('             page  list pages');
+	console.log('pencil list [type]');
+	console.log('展示文件列表');
+	console.log('type为空：列出所有的草稿、文章、页面');
+	console.log('type=draft-article：列出文章草稿');
+	console.log('type=draft-page：列出页面草稿');
+	console.log('type=article：列出文章');
+	console.log('type=page：列出页面');
 }
 
 function list(dir) {
@@ -33,27 +35,27 @@ function list(dir) {
 		}
 	}
 	else {
-		console.log('    no files');
+		console.log('列表为空！');
 	}
 }
 
 function listDraftArticle() {
-	console.log('[+] Article drafts:');
+	console.log('[+] 文章草稿列表:');
 	list('./source/draft/article');
 }
 
 function listDraftPage() {
-	console.log('[+] Page drafts:');
+	console.log('[+] 页面草稿列表:');
 	list('./source/draft/page');
 }
 
 function listArticle() {
-	console.log('[+] Articles:');
+	console.log('[+] 文章列表:');
 	list('./source/article');
 }
 
 function listPage() {
-	console.log('[+] Pages:');
+	console.log('[+] 页面列表:');
 	list('./source/page');
 }
 

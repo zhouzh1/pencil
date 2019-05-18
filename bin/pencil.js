@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-/**
- * entry point
- */
 
 const path = require('path');
 const fse = require('fs-extra');
@@ -22,5 +19,5 @@ else {
 }
 
 module.exports = {
-	tips: 'this is a command line tool, please install globally'
+	tips: '这是一个命令行程序，使用前请先全局安装，`npm install pencil-cli -g`'
 };

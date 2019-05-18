@@ -1,6 +1,11 @@
-/**
- * generate command
+/*
+ * 生成站点的静态Html页面
+ * @Author: zhouzh1 
+ * @Date: 2019-05-18 23:40:17 
+ * @Last Modified by: zhouzh1
+ * @Last Modified time: 2019-05-18 23:48:16
  */
+
 
 if (process.argv[2] === 'help') {
 	help();
@@ -48,12 +53,12 @@ if (fse.existsSync(pluginsdir)) {
 				plugins[pluginName] = result;
 			}
 			else {
-				logger.error(`Plugin Error: ${pluginName} - ${func} is not a function`);
+				logger.error(`插件错误: ${pluginName} - ${func} is not a function`);
 				process.exit();
 			}
 		}
 		catch (error) {
-			logger.error(`Plugin Error: ${pluginName} - ${error.toString()}`);
+			logger.error(`插件错误: ${pluginName} - ${error.toString()}`);
 			process.exit();
 		}
 	}
@@ -68,7 +73,7 @@ Object.defineProperty(Object.prototype, 'copy', {
 		let duplicate = {};
 		for (let key in this) {
 			if (this.hasOwnProperty(key)) {
-				duplicate[key] = this[key]
+				duplicate[key] = this[key];
 			}
 		}
 		return duplicate;
@@ -82,9 +87,8 @@ const theme = site.theme;
 const host = site.host;
 
 function help() {
-	console.log('Usage: pencil generate');
-	console.log('  Description:');
-	console.log('    generate all static pages');
+	console.log('pencil generate');
+	console.log('生成静态Html页面');
 }
 
 /**
@@ -111,7 +115,7 @@ function transform(item, template, templateString, type) {
 
 function generateArticles() {
 	if (articles.length > 0) {
-		console.log('[+] generating articles...');
+		logger.info('正在生成文章页面...')
 		const template = `./themes/${theme}/views/article.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		for (let article of articles) {
@@ -122,7 +126,7 @@ function generateArticles() {
 
 function generatePages() {
 	if (pages.length > 0) {
-		console.log('[+] generating pages...');
+		logger.info('正在生成独立页面...');
 		const template = `./themes/${theme}/views/page.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		for (let page of pages) {
@@ -134,7 +138,7 @@ function generatePages() {
 function generateTags() {
 	// if there are some tags, then generate index pages of tags
 	if (Object.keys(tags).length > 0) {
-		console.log('[+] generating tag pages...');
+		logger.log('正在生成文章标签页面');
 		const template = `./themes/${theme}/views/index.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		let locals = { config, plugins, data: data.copy() };
@@ -195,7 +199,7 @@ function generateTags() {
 function generateCategories() {
 	// if there are some categories, then generate index pages of categories
 	if (Object.keys(categories).length > 0) {
-		console.log('[+] generating category pages...');
+		logger.log('正在生成文章分类页面...');
 		const template = `./themes/${theme}/views/index.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		let locals = { config, plugins, data: data.copy() };
@@ -257,7 +261,7 @@ function generateArchives() {
 	// if theme in use contains 'archive.ejs', then generate archive page
 	const template = `./themes/${theme}/views/archive.ejs`;
 	if (fse.existsSync(template)) {
-		console.log('[+] generating archive page...');
+		logger.log('正在生成文章归档页面...');
 		const templateString = fse.readFileSync(template, 'utf8');
 		let locals = { config, plugins, data: data.copy() };
 		locals.data.label = 'archive';
@@ -273,7 +277,7 @@ function generateArchives() {
 }
 
 function generateIndex() {
-	console.log('[+] generating index pages...');
+	logger.log('正在生成Blog站点的首页...');
 	const template = `./themes/${theme}/views/index.ejs`;
 	const templateString = fse.readFileSync(template, 'utf8');
 	let locals = { config, plugins, data: data.copy() };
@@ -313,7 +317,7 @@ function generateIndex() {
 }
 
 function generateRss() {
-	console.log('[+] generating rss feed...');
+	logger.log('正在生成站点的Rss信息');
 	let feed = new RSS({
 		title: site.title,
 		description: site.description,
@@ -363,7 +367,7 @@ function runner(argvs) {
 		generateArchives();
 		generateRss();
 		const endTime = new Date().getTime();
-		console.log(`[+] generate successfully! All cost ${(endTime - startTime) / 1000}s`);
+		logger.log(`站点构建成功！总耗时：${(endTime - startTime) / 1000}s`);
 	}
 }
 

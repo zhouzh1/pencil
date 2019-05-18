@@ -1,5 +1,9 @@
-/**
- * version command
+/*
+ * 显示程序和运行环境的版本信息
+ * @Author: zhouzh1 
+ * @Date: 2019-05-18 23:05:46 
+ * @Last Modified by: zhouzh1
+ * @Last Modified time: 2019-05-18 23:15:50
  */
 
 if (process.argv[2] === 'help') {
@@ -10,9 +14,8 @@ if (process.argv[2] === 'help') {
 const pkg = require('../package.json');
 
 function help() {
-	console.log('Usage: pencil version');
-	console.log('  Description:');
-	console.log('    display version');
+	console.log('pencil version');
+	console.log('显示程序和运行环境的版本信息');
 }
 
 /**
