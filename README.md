@@ -1,154 +1,153 @@
-# About
+# 关于
 
-This is a Node.js static blog generator. By means of [GithubPages](https://pages.github.com/), you only need to edit articles in markdown and execute some commands in terminal, a online blog site would be prepared for you. See [Demo](https://zhouzh1.github.io).
+这是一个静态博客生成器，就是一个类似hexo的玩意，可以配合Github Page创建免费的个人Blog站点.
 
-# Prerequisites
+# 要求
 
-1. Node 6.x and above
-2. Git client
+1. Git
+2. Node.js v6.x
 
-# Install
+# 安装
 
-`npm install pencil-cli --global`.
+`npm install pencil-cli -g`.
 
-# Usage
+# 使用方法
 
-1. Create a github repository named `<yourname>.github.io` and clone
-2. Change to `source` branch, `git checkout -b source`
-3. Initiate a new site with `<yourname.github.io>`, `pencil init ./`
-4. Config site in `config.yml`
-4. Display help information, `pencil help`
+1. GitHub创建一个名为`<yourname>.github.io`的仓库并克隆到本地
+2. 创建source分支， `git checkout -b source`
+3. 初始化站点结构，`pencil init ./`
+4. 在`config.yml`文件中配置站点信息
+4. 查看帮助信息， `pencil help`
 
-# Directory structure
-
-After initiation, following directory structure has been created.
+# 站点的目录结构
 
 ```
 .
 |____site
-  |____config.yml      # configuration file
-  |____public          # root directory of site
-    |____site_assets   # static assets of site
-    |____theme_assets  # static assets of theme in use
-  |____source          # markdown source file
-  |____plugins         # plugins for site
-  |____themes          # themes for blog
+  |____config.yml      # 配置文件
+  |____public          # 站点根目录
+    |____site_assets   # 存放站点的静态文件
+    |____theme_assets  # 存放主题的静态文件
+  |____source          # markdown源文件
+  |____plugins         # 插件目录
+  |____themes          # 主题目录
 ```
 
-# Commands
+# 部署
 
-- `pencil help [command]` Display help information
-- `pencil init <dir>` Initiate a new site, `<dir>` must be a empty git repository
-- `pencil create <type> <title>` Create a new draft,  `<type>` is either 'article' or 'page', the default markdown editor will be opened automatically
-- `pencil publish <type> <title>` Publish draft, `<type>` and `<title>` is the same as in `create`
-- `pencil generate` Generate site, site contents are saved under `./public`
-- `pencil server [port]` Start a local server listening on `[port]` to preview, default `[port]` is 3000
-- `pencil deploy` Deploy to remote server
-- `pencil list [type]` List drafts, articles and pages
-- `penicl edit <type> <title>` Modify article and page
-- `pencil delete <type> <title>` Delete draft, article and page
+将远程Git仓库clone至本地后，必须先切换至**source**分支，`pencil deploy`命令会将本地的**source**分支推送到远程仓库的**source**分支，并且将**public**子目录推送到远程仓库的master分支.
 
-# Deploy
+# 创建主题
 
-The local repository must work under `source` branch, after `pencil deploy`, local `source` branch would be push to remote `source` branch and `./public` would be push to remote `master` branch.
+主题模板使用的是[ejs](https://github.com/tj/ejs), 一个符合规范的主题必须包含下列目录和文件:
 
-# Create themes
+1. `views`, 包含所有的ejs模板
+2. `theme_assets`, 包含css, js, font等静态资源
+3. `views/index.ejs`, 首页模板
+4. `views/article.ejs`, 文章详情页模板
+5. `views/page.ejs`, 独立页模板
 
-The template engine in use is [ejs](https://github.com/tj/ejs), a valid theme must contain follwing directories and files:
+下列文件是可选的:
 
-1. `views`, store all view templates
-2. `theme_assets`, store css, js, images and fonts, etc.
-3. `views/index.ejs`, generate various index pages
-4. `views/article.ejs`, generate article pages
-5. `views/page.ejs`, generate independent pages
+1. `views/archive.ejs`, 文章归档页模板
+2. `views/tag.ejs`, 文章标签页模板
+3. `views/category.ejs`, 文章分类页模板
+4. `<yourtheme>/config.yml`, 主题配置文件
 
-But following files are optional:
+**注意: 在模板文件中和markdown文件中引用静态资源必须使用站点的绝对路径**
 
-1. `views/archive.ejs`, generate archive page
-2. `views/tag.ejs`, generate summary page of tags
-3. `views/category.ejs`, generate summary page of categories
-4. `<yourtheme>/config.yml`, config your theme
-
-**Attention: all static files referenced in view templates and markdown source files must use absolute path**
-
-When write view templates, you must know what is those template data. The main program will process config files of site and theme, markdown source files and execute plugin functions to assemble all data in a object named `locals`, it is the template data object.
+在构建站点的过程中，主程序会对配置文件和markdown文件进行处理，会执行插件函数，并组装出模板所需要的数据，最终的模板数据存储在一个命名为**locals**的对象变量中.
 
 ```js
 locals = {
-    // configuration
+    // 配置信息
     config: {
+        // 全局站点的配置信息
         site: {
-            host: 'http://blog.me',
-            title: 'title of blog',
-            description: 'description of blog'
+            host: 'https://xx.blog',
+            title: '站点标题',
+            description: '站点描述'
         },
-        contact: {
-            email: 'your.gmail.com',
-            weibo: 'your.weibo.com',
-            github: 'your.github.com'
-        },
-        // configuration of theme
-        themeConfig: { ... }
+        // 主题的配置信息
+        themeConfig: { 
+            [index: string]: any
+        }
     },
-    // articles and pages
+    // 文章和页面
     data: {
-        // label could be one of 'index', 'archive', 'tag', 'category' and ${data.page.title}, indicates that which page is beening generated
+        // 当前构建的页面，可选值有 index | archive | tag | category | ${data.page.title}
         label: 'index',
-        // all tags attached to articles
+        // 所有的标签
         tags: {
-            JavaScript: [article_1, article_2, article_3, ...],
-            Python: [article_1, article_2, article_3, ...]
+            'tag_1': [article_1, article_2, ...],
+            'tag_2': [article_3, article_4, ...]
         },
-        // all categories attached to articles
+        // 所有分类
         categories: {
-            frontend: [article_1, article_2, article_3, ...],
-            database: [article_1, article_2, article_3, ...]
+            'category_1': [article_1, article_2, ...],
+            'category_2': [article_1, article_2, ...]
         },
-        // archive of all articles
+        // 文章归档
         archives: {
-            "2017": {
-                "06": [article_1, article_2, article_3, ...],
-                "07": [article_1, article_2, article_3, ...]
+            "2019": {
+                "06": [article_1, article_2, ...],
+                "07": [article_3, article_4, ...]
             },
-            "2016": {
-                "08": [article_1, article_2, article_3, ...],
-                "09": [article_1, article_2, article_3, ....]
+            "2018": {
+                "08": [article_1, article_2, ...],
+                "09": [article_1, article_2, ....]
             }
         },
-        // independent pages
+        // 独立页面的链接
         pageLinks: {
             about: '/page/about.html'
         },
-        // articles in various index pages
+        // 索引页（首页）的文章列表，用于分页展示
         articles: [article_1, article_2, article_3, ....],
-        // article data in article page 
+        // 文章页面的数据 
         article: {
-            title: 'study javascript',
-            tags: ['javascript', 'node'],
-            category: 'frontend',
-            createdTime: '2017-01-01 09:00',
-            content: 'html string of content',
-            abstract: 'html string of abstract',
-            filename: 'study_javascript.html'
+            title: '文章标题',
+            tags: ['标签一', '标签二'],
+            category: '文章分类',
+            createdTime: '2019-08-08 09:00',
+            content: '文章类容',
+            abstract: '文章摘要',
+            filename: '文章标题.html'
         },
-        // page data in independent page
+        // 独立页面的数据
         page: {
-            title: 'about',
+            title: '页面名称',
             createdTime: '2017-01-01 09:00',
-            content: 'html string of content',
-            filename: 'about.html'
+            content: '页面内容',
+            filename: '页面名称.html'
         }
     },
-    // result returned by plugin function
+    // 插件函数返回的html内容
     plugins: {
-        tagcloud: '<div class="tag-cloud">...</div>'
+        pluginName: '<section>...</section>'
     }
 }
 ```
 
-# Create plugins
+# 创建插件
 
-Every plugin module should export a function, once you place a plugin in `/plugins` directory, plugin module will be required and function exported will be called with seven arguments automatically, the seven arguments are `config`, `articles`,  `pages`, `tags`, `categories`, `archives`, `pageLinks`, return value of plugin function will be inserted to `locals.plugins`.
+每个插件都是一个函数，函数签名为：
+
+```js
+/**
+ * @param {Object} config 配置信息
+ * @param {Object} articles 文章信息
+ * @param {Object} pages 页面信息
+ * @param {Object} tags 标签信息
+ * @param {Object} categories 分类信息
+ * @param {Object} archives 归档信息
+ * @param {Object} pageLinks 页面链接信息
+ * @return {String}
+ */
+function plugin(config, articles, pages, tags, categories, archives, pageLinks) {
+    // todo
+}
+```
 
 # License
 
