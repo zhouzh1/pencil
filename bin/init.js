@@ -3,7 +3,7 @@
  * @Author: zhouzh1 
  * @Date: 2019-05-18 23:31:43 
  * @Last Modified by: zhouzh1
- * @Last Modified time: 2019-05-18 23:35:46
+ * @Last Modified time: 2019-05-19 17:29:56
  */
 
 
@@ -20,8 +20,8 @@ const logger = require('../lib/logger');
  * init command
  */
 function help () {
-	console.log('pencil init <dir>');
-	console.log('初始化一个新的Blog站点');
+	console.log('使用方法: pencil init <dir>');
+	console.log('功能描述: 初始化一个新的Blog站点');
 	console.log('<dir> 空目录路径');
 }
 

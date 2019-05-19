@@ -3,7 +3,7 @@
  * @Author: zhouzh1 
  * @Date: 2019-05-19 00:29:44 
  * @Last Modified by: zhouzh1
- * @Last Modified time: 2019-05-19 00:32:25
+ * @Last Modified time: 2019-05-19 17:47:33
  */
 
 
@@ -21,9 +21,11 @@ const moment = require('moment');
 const logger = require('../lib/logger');
 
 function help() {
-	console.log('pencil create <type> <title>');
-	console.log('创建一篇新的草稿');
-	console.log('<type> 草稿类型 article | page');
+	console.log('使用方法: pencil create <type> <title>');
+	console.log('功能描述: 创建一篇新的草稿');
+	console.log('<type>:');
+	console.log('  * article: 文章草稿');
+	console.log('  * page: 页面草稿');
 	console.log('<title> 草稿标题');
 }
 

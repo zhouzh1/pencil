@@ -3,7 +3,7 @@
  * @Author: zhouzh1 
  * @Date: 2019-05-18 23:40:17 
  * @Last Modified by: zhouzh1
- * @Last Modified time: 2019-05-18 23:48:16
+ * @Last Modified time: 2019-05-19 17:38:38
  */
 
 
@@ -87,8 +87,8 @@ const theme = site.theme;
 const host = site.host;
 
 function help() {
-	console.log('pencil generate');
-	console.log('生成静态Html页面');
+	console.log('使用方法: pencil generate');
+	console.log('功能描述: 构建静态站点');
 }
 
 /**

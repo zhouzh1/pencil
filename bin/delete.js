@@ -3,7 +3,7 @@
  * @Author: zhouzh1 
  * @Date: 2019-05-19 00:24:57 
  * @Last Modified by: zhouzh1
- * @Last Modified time: 2019-05-19 00:29:34
+ * @Last Modified time: 2019-05-19 17:46:09
  */
 
 
@@ -24,10 +24,14 @@ const EOL = require('os').EOL;
 const frontmatterRegExp = /^-{3}\n([\s\S]+?)\n-{3}/;
 
 function help() {
-	console.log('pencil delete <type> <title>');
-	console.log('删除文件');
-	console.log('<type> 文件类型 draft-article | draft-page | article | page');
-	console.log('<title> 文件名');
+	console.log('使用方法: pencil delete <type> <title>');
+	console.log('功能描述: 删除草稿或已经发布的文章和页面');
+	console.log('<type>:');
+	console.log('  * draft-article: 文章草稿');
+	console.log('  * draft-page: 文章草稿');
+	console.log('  * article: 文章');
+	console.log('  * page: 页面');
+	console.log('<title> 文件标题');
 }
 
 function eval(cmd, context, filename, callback) {

@@ -3,7 +3,7 @@
  * @Author: zhouzh1 
  * @Date: 2019-05-18 23:05:46 
  * @Last Modified by: zhouzh1
- * @Last Modified time: 2019-05-18 23:15:50
+ * @Last Modified time: 2019-05-19 17:49:18
  */
 
 if (process.argv[2] === 'help') {
@@ -14,8 +14,8 @@ if (process.argv[2] === 'help') {
 const pkg = require('../package.json');
 
 function help() {
-	console.log('pencil version');
-	console.log('显示程序和运行环境的版本信息');
+	console.log('使用方法: pencil version');
+	console.log('功能描述: 显示程序和运行环境的版本信息');
 }
 
 /**

@@ -3,7 +3,7 @@
  * @Author: zhouzh1 
  * @Date: 2019-05-18 23:08:01 
  * @Last Modified by: zhouzh1
- * @Last Modified time: 2019-05-18 23:31:33
+ * @Last Modified time: 2019-05-19 17:48:41
  */
 
 
@@ -20,8 +20,8 @@ const express = require('express');
 const logger = require('../lib/logger');
 
 function help () {
-	console.log('pencil server [port=3000]');
-	console.log('开启本地预览服务器，默认端口3000');
+	console.log('使用方法: pencil server [port]');
+	console.log('功能描述: 开启本地预览服务器，默认端口3000');
 }
 
 /**

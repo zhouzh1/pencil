@@ -3,7 +3,7 @@
  * @Author: zhouzh1 
  * @Date: 2019-05-18 23:48:29 
  * @Last Modified by: zhouzh1
- * @Last Modified time: 2019-05-18 23:51:00
+ * @Last Modified time: 2019-05-19 17:43:24
  */
 
 
@@ -20,10 +20,14 @@ const open = require('opn');
 const logger = require('../lib/logger');
 
 function help() {
-	console.log('pencil edit <type> <title>');
-	console.log('使用默认编辑器编辑文件');
-	console.log('<type> 文件类型 draft-article | draft-page | article | page');
-	console.log('<title> 文件名');
+	console.log('使用方法: pencil edit <type> <title>');
+	console.log('功能描述: 打开默认编辑器编辑指定文件');
+	console.log('<type>:');
+	console.log('  * draft-article: 文章草稿');
+	console.log('  * draft-page: 文章草稿');
+	console.log('  * article: 文章');
+	console.log('  * page: 页面');
+	console.log('<title> 文件标题');
 }
 
 
@@ -32,7 +36,7 @@ function edit(fragment, title) {
 	let markdown = `./source/${fragment}/${filename}.md`;
 	if (!fse.existsSync(markdown)) {
 		let type = fragment.split('/').reverse().join(' ');
-		logger.error(`no such ${type}: ${title}`);
+		logger.error(`没有该文件: ${type}|${title}`);
 	}
 	else {
 		open(markdown);

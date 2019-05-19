@@ -3,7 +3,7 @@
  * @Author: zhouzh1 
  * @Date: 2019-05-18 23:51:11 
  * @Last Modified by: zhouzh1
- * @Last Modified time: 2019-05-19 00:24:12
+ * @Last Modified time: 2019-05-19 17:44:30
  */
 
 const logger = require('../lib/logger');
@@ -25,8 +25,8 @@ const options = {
 };
 
 function help() {
-	console.log('pencil push');
-	console.log('将站点部署到线上服务器');
+	console.log('使用方法: pencil push');
+	console.log('功能描述: 将站点部署到线上服务器');
 }
 
 function runner() {

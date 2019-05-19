@@ -3,7 +3,7 @@
  * @Author: zhouzh1 
  * @Date: 2019-05-18 23:16:38 
  * @Last Modified by: zhouzh1
- * @Last Modified time: 2019-05-18 23:23:59
+ * @Last Modified time: 2019-05-19 17:32:42
  */
 
 if (process.argv[2] === 'help') {
@@ -17,13 +17,14 @@ const path = require('path');
 const fse = require('fs-extra');
 
 function help() {
-	console.log('pencil list [type]');
-	console.log('展示文件列表');
-	console.log('type为空：列出所有的草稿、文章、页面');
-	console.log('type=draft-article：列出文章草稿');
-	console.log('type=draft-page：列出页面草稿');
-	console.log('type=article：列出文章');
-	console.log('type=page：列出页面');
+	console.log('使用方法: pencil list [type]');
+	console.log('功能描述: 展示文件列表');
+	console.log('[type]:');
+	console.log('  * null: 列出所有的草稿、文章、页面');
+	console.log('  * draft-article: 列出文章草稿');
+	console.log('  * draft-page: 列出页面草稿');
+	console.log('  * article: 列出文章');
+	console.log('  * page: 列出页面');
 }
 
 function list(dir) {
