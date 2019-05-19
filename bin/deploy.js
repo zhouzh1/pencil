@@ -36,27 +36,27 @@ function runner() {
 	// git commit -m `${time}`
 	// git push origin source:source
 	// git subtree push --prefix public origin master
-	logger.log(`${EOL}[+] git pull origin source:source`);
+	logger.info(`${EOL}[+] git pull origin source:source`);
 	const pull = spawn('git', ['pull', 'origin', 'source:source'], options);
 	pull.on('close', function (code) {
 		if (code === 0) {
-			logger.log(`${EOL}git status`);
+			logger.info(`${EOL}git status`);
 			const status = spawn('git', ['status'], options);
 			status.on('close', function (code) {
 				if (code === 0) {
-					logger.log(`${EOL}git add -A`);
+					logger.info(`${EOL}git add -A`);
 					const add = spawn('git', ['add', '-A'], options);
 					add.on('close', function (code) {
 						if (code === 0) {
-							logger.log(`${EOL}git commit`);
+							logger.info(`${EOL}git commit`);
 							const commit = spawn('git', ['commit', '-m', (new Date()).toLocaleString()], options);
 							commit.on('close', function (code) {
 								if (code === 0) {
-									logger.log(`${EOL}git push origin source:source`);
+									logger.info(`${EOL}git push origin source:source`);
 									const sourceBranch = spawn('git', ['push', 'origin', 'source:source'], options);
 									sourceBranch.on('close', function (code) {
 										if (code === 0) {
-											logger.log(`${EOL}git subtree push --prefix public origin master`);
+											logger.info(`${EOL}git subtree push --prefix public origin master`);
 											spawn('git', ['subtree', 'push', '--prefix', 'public', 'origin', 'master'], options);
 										}
 									});

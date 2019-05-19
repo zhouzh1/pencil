@@ -43,7 +43,7 @@ function runner (argvs) {
 		// set './public' as '/www' of server
 		app.use(express.static('public'));
 		app.listen(port, function() {
-			logger.log('本地预览服务启动成功...');
+			logger.info('本地预览服务启动成功...');
 			// open default browser
 			open(`http://localhost:${port}`);
 		});

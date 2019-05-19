@@ -3,7 +3,7 @@
  * @Author: zhouzh1 
  * @Date: 2019-05-18 23:40:17 
  * @Last Modified by: zhouzh1
- * @Last Modified time: 2019-05-19 17:38:38
+ * @Last Modified time: 2019-05-19 18:41:07
  */
 
 
@@ -115,7 +115,7 @@ function transform(item, template, templateString, type) {
 
 function generateArticles() {
 	if (articles.length > 0) {
-		logger.info('正在生成文章页面...')
+		logger.info('正在构建文章页面...');
 		const template = `./themes/${theme}/views/article.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		for (let article of articles) {
@@ -126,7 +126,7 @@ function generateArticles() {
 
 function generatePages() {
 	if (pages.length > 0) {
-		logger.info('正在生成独立页面...');
+		logger.info('正在构建独立页面...');
 		const template = `./themes/${theme}/views/page.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		for (let page of pages) {
@@ -138,7 +138,7 @@ function generatePages() {
 function generateTags() {
 	// if there are some tags, then generate index pages of tags
 	if (Object.keys(tags).length > 0) {
-		logger.log('正在生成文章标签页面');
+		logger.info('正在构建文章标签页面...');
 		const template = `./themes/${theme}/views/index.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		let locals = { config, plugins, data: data.copy() };
@@ -199,7 +199,7 @@ function generateTags() {
 function generateCategories() {
 	// if there are some categories, then generate index pages of categories
 	if (Object.keys(categories).length > 0) {
-		logger.log('正在生成文章分类页面...');
+		logger.info('正在构建文章分类页面...');
 		const template = `./themes/${theme}/views/index.ejs`;
 		const templateString = fse.readFileSync(template, 'utf8');
 		let locals = { config, plugins, data: data.copy() };
@@ -261,7 +261,7 @@ function generateArchives() {
 	// if theme in use contains 'archive.ejs', then generate archive page
 	const template = `./themes/${theme}/views/archive.ejs`;
 	if (fse.existsSync(template)) {
-		logger.log('正在生成文章归档页面...');
+		logger.info('正在构建文章归档页面...');
 		const templateString = fse.readFileSync(template, 'utf8');
 		let locals = { config, plugins, data: data.copy() };
 		locals.data.label = 'archive';
@@ -277,7 +277,7 @@ function generateArchives() {
 }
 
 function generateIndex() {
-	logger.log('正在生成Blog站点的首页...');
+	logger.info('正在构建Blog索引页面...');
 	const template = `./themes/${theme}/views/index.ejs`;
 	const templateString = fse.readFileSync(template, 'utf8');
 	let locals = { config, plugins, data: data.copy() };
@@ -317,7 +317,7 @@ function generateIndex() {
 }
 
 function generateRss() {
-	logger.log('正在生成站点的Rss信息');
+	logger.info('正在构建站点的Rss信息...');
 	let feed = new RSS({
 		title: site.title,
 		description: site.description,
@@ -367,7 +367,7 @@ function runner(argvs) {
 		generateArchives();
 		generateRss();
 		const endTime = new Date().getTime();
-		logger.log(`站点构建成功！总耗时：${(endTime - startTime) / 1000}s`);
+		logger.info(`站点构建成功！总耗时：${(endTime - startTime) / 1000}s`);
 	}
 }
 

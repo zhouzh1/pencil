@@ -3,7 +3,7 @@
  * @Author: zhouzh1 
  * @Date: 2019-05-18 23:16:38 
  * @Last Modified by: zhouzh1
- * @Last Modified time: 2019-05-19 17:32:42
+ * @Last Modified time: 2019-05-19 18:48:42
  */
 
 if (process.argv[2] === 'help') {
@@ -27,16 +27,24 @@ function help() {
 	console.log('  * page: 列出页面');
 }
 
+/**
+ * 展示文件列表
+ * @param {String} dir 目录路径
+ */
 function list(dir) {
-	const files = fse.readdirSync(dir);
-	if (files.length > 0) {
-		for (let file of files) {
-			let title = path.parse(file).name.split('-').join(' ');
-			console.log(`    "${title}"`);
+	if (fse.existsSync(dir)) {
+		const files = fse.readdirSync(dir);
+		if (files.length > 0) {
+			for (let file of files) {
+				let title = path.parse(file).name.split('-').join(' ');
+				console.log(`  "${title}"`);
+			}
 		}
-	}
-	else {
-		console.log('列表为空！');
+		else {
+			console.log('  --');
+		}
+	} else {
+		console.log('  --');
 	}
 }
 

@@ -38,11 +38,11 @@ function eval(cmd, context, filename, callback) {
 	if (cmd === `yes${EOL}`) {
 		// input 'yes', delete
 		fse.removeSync(context.markdown);
-		logger.log('删除成功');
+		logger.info('删除成功');
 		// if exist html file, remove it and re-generate
 		let html = context.html;
 		if (html && fse.existsSync(html)) {
-			logger.log('开始重新构建站点...');
+			logger.info('开始重新构建站点...');
 			require('./generate').runner([]);
 		}
 		process.exit();

@@ -51,7 +51,7 @@ function publish(type, title) {
 		else {
 			let formal = `./source/${type}/${draftname}.md`;
 			fse.moveSync(draft, formal);
-			logger.log('发布成功');
+			logger.info('发布成功');
 		}
 	}
 }

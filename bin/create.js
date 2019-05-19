@@ -61,7 +61,7 @@ createdTime: ${moment().format('YYYY-MM-DD HH:mm')}
 	}
 	else {
 		fse.outputFileSync(draft, frontmatter);
-		logger.log('创建成功');
+		logger.info('创建成功');
 		// open default editor
 		open(draft);
 	}
