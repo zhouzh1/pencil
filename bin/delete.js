@@ -19,7 +19,6 @@ const fse = require('fs-extra');
 const yaml = require('js-yaml');
 const repl = require('repl');
 const logger = require('../lib/logger');
-const EOL = require('os').EOL;
 
 const frontmatterRegExp = /^-{3}\n([\s\S]+?)\n-{3}/;
 
@@ -35,7 +34,7 @@ function help() {
 }
 
 function eval(cmd, context, filename, callback) {
-	if (cmd === `yes${EOL}`) {
+	if (cmd === 'yes\n') {
 		// input 'yes', delete
 		fse.removeSync(context.markdown);
 		logger.info('删除成功');
@@ -47,7 +46,7 @@ function eval(cmd, context, filename, callback) {
 		}
 		process.exit();
 	}
-	else if (cmd === `no${EOL}`) {
+	else if (cmd === 'no\n') {
 		// input 'no', exit
 		process.exit();
 	}
